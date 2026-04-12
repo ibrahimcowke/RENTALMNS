@@ -10,6 +10,7 @@ import {
   LogOut,
   Map
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './Layout.css';
 
 interface SidebarProps {
@@ -18,13 +19,15 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
+  const { t } = useTranslation();
+
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'properties', label: 'Properties', icon: Building2 },
-    { id: 'districts', label: 'Districts', icon: Map },
-    { id: 'tenants', label: 'Tenants', icon: Users },
-    { id: 'finance', label: 'Finance', icon: Wallet },
-    { id: 'maintenance', label: 'Maintenance', icon: Wrench },
+    { id: 'dashboard', label: t('common.dashboard'), icon: LayoutDashboard },
+    { id: 'properties', label: t('common.properties'), icon: Building2 },
+    { id: 'districts', label: t('common.districts'), icon: Map },
+    { id: 'tenants', label: t('common.tenants'), icon: Users },
+    { id: 'finance', label: t('common.finance'), icon: Wallet },
+    { id: 'maintenance', label: t('common.maintenance'), icon: Wrench },
   ];
 
   return (
@@ -35,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
       </div>
 
       <nav className="nav-group">
-        <span className="nav-label">Main Menu</span>
+        <span className="nav-label">{t('sidebar.command_center')}</span>
         {menuItems.map((item) => (
           <a
             key={item.id}
@@ -53,10 +56,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
       </nav>
 
       <nav className="nav-group" style={{ marginTop: 'auto' }}>
-        <span className="nav-label">System</span>
+        <span className="nav-label">{t('sidebar.system')}</span>
         <a href="#settings" className="nav-item">
           <Settings size={20} />
-          Settings
+          {t('common.edit')} Settings
         </a>
         <a href="#help" className="nav-item">
           <HelpCircle size={20} />
@@ -64,7 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
         </a>
         <a href="#logout" className="nav-item" style={{ color: 'var(--danger)' }}>
           <LogOut size={20} />
-          Sign Out
+          {t('sidebar.logout')}
         </a>
       </nav>
     </aside>

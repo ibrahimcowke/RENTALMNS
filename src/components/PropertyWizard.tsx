@@ -1,55 +1,117 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight, ChevronLeft, Building2, MapPin, DollarSign, CheckCircle } from 'lucide-react';
+import { 
+  X, 
+  ChevronRight, 
+  ChevronLeft, 
+  Building2, 
+  MapPin, 
+  DollarSign, 
+  CheckCircle,
+  Bed,
+  Bath,
+  ChefHat,
+  Layers
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
-import type { District, PropertyType } from '../types';
+import type { District, PropertyType, Property } from '../types';
 
 interface PropertyWizardProps {
   isOpen: boolean;
   onClose: () => void;
+  initialData?: Property;
 }
 
-const steps = [
-  { id: 1, title: 'Basic Details', icon: Building2 },
-  { id: 2, title: 'Location & Info', icon: MapPin },
-  { id: 3, title: 'Pricing & Status', icon: DollarSign },
-];
-
-const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
-  const { addProperty, addNotification } = useAppStore();
+const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose, initialData }) => {
+  const { addProperty, updateProperty, addNotification } = useAppStore();
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<Property, 'id' | 'currency'>>({
     name: '',
-    type: 'Apartment' as PropertyType,
-    district: 'Hodan' as District,
+    type: 'Apartment',
+    district: 'Hodan',
     address: '',
     rentAmount: 0,
     units: 1,
-    status: 'Available' as const,
+    status: 'Available',
+    beds: 0,
+    toilets: 0,
+    kitchens: 0,
+    floors: 0
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name,
+        type: initialData.type,
+        district: initialData.district,
+        address: initialData.address,
+        rentAmount: initialData.rentAmount,
+        units: initialData.units,
+        status: initialData.status,
+        beds: initialData.beds || 0,
+        toilets: initialData.toilets || 0,
+        kitchens: initialData.kitchens || 0,
+        floors: initialData.floors || 0
+      });
+    } else {
+      setFormData({
+        name: '',
+        type: 'Apartment',
+        district: 'Hodan',
+        address: '',
+        rentAmount: 0,
+        units: 1,
+        status: 'Available',
+        beds: 0,
+        toilets: 0,
+        kitchens: 0,
+        floors: 0
+      });
+    }
+    setCurrentStep(1);
+  }, [initialData, isOpen]);
+
+  const steps = [
+    { id: 1, title: t('properties.wizard.step1'), icon: Building2 },
+    { id: 2, title: t('properties.wizard.step2'), icon: MapPin },
+    { id: 3, title: t('properties.wizard.step3'), icon: DollarSign },
+  ];
 
   const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, 3));
   const handleBack = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
   const handleSubmit = () => {
-    const newProperty = {
-      ...formData,
-      id: Math.random().toString(36).substr(2, 9),
-      currency: 'USD' as const,
-    };
-    addProperty(newProperty);
-    addNotification({
-      type: 'success',
-      title: 'Property Added',
-      message: `${formData.name} was successfully added to ${formData.district}.`
-    });
+    if (initialData) {
+      updateProperty(initialData.id, formData);
+      addNotification({
+        type: 'success',
+        title: t('common.save'),
+        message: `${formData.name} was successfully updated.`
+      });
+    } else {
+      const newProperty: Property = {
+        ...formData,
+        id: Math.random().toString(36).substr(2, 9),
+        currency: 'USD'
+      };
+      addProperty(newProperty);
+      addNotification({
+        type: 'success',
+        title: t('common.save'),
+        message: `${formData.name} was successfully added.`
+      });
+    }
     onClose();
-    setCurrentStep(1);
   };
 
   const updateField = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  const isResidential = ['Villa', 'Apartment', 'Normal House'].includes(formData.type);
 
   if (!isOpen) return null;
 
@@ -81,8 +143,10 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
         {/* Header */}
         <div style={{ padding: '2rem', background: '#f8fafc', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>Add New Property</h2>
-            <p style={{ fontSize: '0.875rem', color: '#64748b' }}>Step {currentStep} of 3: {steps[currentStep-1].title}</p>
+            <h2 style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>
+              {initialData ? t('common.edit') : t('properties.register_button')}
+            </h2>
+            <p style={{ fontSize: '0.875rem', color: '#64748b' }}>{t('common.priority')} {currentStep} / 3: {steps[currentStep-1].title}</p>
           </div>
           <button onClick={onClose} style={{ background: 'transparent', padding: '0.5rem' }}>
             <X size={24} color="#64748b" />
@@ -121,7 +185,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Step Content */}
-        <div style={{ padding: '2rem', minHeight: '300px' }}>
+        <div style={{ padding: '2rem', minHeight: '350px' }}>
           <AnimatePresence mode="wait">
             {currentStep === 1 && (
               <motion.div
@@ -132,7 +196,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
                 style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
               >
                 <div>
-                  <label style={labelStyle}>Property Name</label>
+                  <label style={labelStyle}>{t('common.properties')} {t('districts.list.Hodan.desc').split(' ')[0]} Name</label>
                   <input 
                     style={inputStyle} 
                     placeholder="e.g. Blue Lagoon Villas"
@@ -141,19 +205,67 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
                   />
                 </div>
                 <div>
-                  <label style={labelStyle}>Property Type</label>
+                  <label style={labelStyle}>{t('common.properties')} Type</label>
                   <select 
                     style={inputStyle}
                     value={formData.type}
                     onChange={(e) => updateField('type', e.target.value)}
                   >
-                    <option>Villa</option>
-                    <option>Apartment</option>
-                    <option>Shop</option>
-                    <option>Office</option>
-                    <option>Warehouse</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Normal House">{t('properties.normal_house')}</option>
+                    <option value="Shop">Shop</option>
+                    <option value="Office">Office</option>
+                    <option value="Warehouse">Warehouse</option>
                   </select>
                 </div>
+
+                {isResidential && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
+                  >
+                    <div>
+                      <label style={labelStyle}><Bed size={14} style={{ display: 'inline', marginRight: '4px' }}/> {t('properties.beds')}</label>
+                      <input 
+                        type="number"
+                        style={inputStyle} 
+                        value={formData.beds}
+                        onChange={(e) => updateField('beds', Number(e.target.value))}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}><Bath size={14} style={{ display: 'inline', marginRight: '4px' }}/> {t('properties.toilets')}</label>
+                      <input 
+                        type="number"
+                        style={inputStyle} 
+                        value={formData.toilets}
+                        onChange={(e) => updateField('toilets', Number(e.target.value))}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}><ChefHat size={14} style={{ display: 'inline', marginRight: '4px' }}/> {t('properties.kitchens')}</label>
+                      <input 
+                        type="number"
+                        style={inputStyle} 
+                        value={formData.kitchens}
+                        onChange={(e) => updateField('kitchens', Number(e.target.value))}
+                      />
+                    </div>
+                    {formData.type === 'Villa' && (
+                      <div>
+                        <label style={labelStyle}><Layers size={14} style={{ display: 'inline', marginRight: '4px' }}/> {t('properties.floors')}</label>
+                        <input 
+                          type="number"
+                          style={inputStyle} 
+                          value={formData.floors}
+                          onChange={(e) => updateField('floors', Number(e.target.value))}
+                        />
+                      </div>
+                    )}
+                  </motion.div>
+                )}
               </motion.div>
             )}
 
@@ -166,7 +278,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
                 style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
               >
                 <div>
-                  <label style={labelStyle}>District</label>
+                  <label style={labelStyle}>{t('common.districts')}</label>
                   <select 
                     style={inputStyle}
                     value={formData.district}
@@ -178,7 +290,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
                   </select>
                 </div>
                 <div>
-                  <label style={labelStyle}>Full Address</label>
+                  <label style={labelStyle}>{t('common.search')} Address</label>
                   <textarea 
                     style={{ ...inputStyle, height: '100px', resize: 'none' }} 
                     placeholder="Street name, landmarks..."
@@ -199,7 +311,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
               >
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
-                    <label style={labelStyle}>Monthly Rent (USD)</label>
+                    <label style={labelStyle}>{t('properties.rent_per_month')} (USD)</label>
                     <input 
                       type="number" 
                       style={inputStyle} 
@@ -208,7 +320,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
                     />
                   </div>
                   <div>
-                    <label style={labelStyle}>Number of Units</label>
+                    <label style={labelStyle}>{t('properties.units')}</label>
                     <input 
                       type="number" 
                       style={inputStyle} 
@@ -218,13 +330,14 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
                   </div>
                 </div>
                 <div>
-                  <label style={labelStyle}>Initial Status</label>
+                  <label style={labelStyle}>{t('common.status')}</label>
                   <select 
                     style={inputStyle}
                     value={formData.status}
                     onChange={(e) => updateField('status', e.target.value)}
                   >
                     <option value="Available">Available</option>
+                    <option value="Occupied">Occupied</option>
                     <option value="Maintenance">Under Maintenance</option>
                   </select>
                 </div>
@@ -239,7 +352,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
             onClick={currentStep === 1 ? onClose : handleBack}
             style={{ padding: '0.75rem 1.5rem', background: 'transparent', color: '#64748b', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
           >
-            {currentStep === 1 ? 'Cancel' : <><ChevronLeft size={18} /> Previous</>}
+            {currentStep === 1 ? t('common.cancel') : <><ChevronLeft size={18} /> {t('common.date')}</>}
           </button>
           
           <button 
@@ -247,7 +360,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose }) => {
             className="premium-gradient"
             style={{ padding: '0.75rem 2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'white' }}
           >
-            {currentStep === 3 ? 'Complete Setup' : <>Next Step <ChevronRight size={18} /></>}
+            {currentStep === 3 ? (initialData ? t('common.save') : t('common.add')) : <>Next Step <ChevronRight size={18} /></>}
           </button>
         </div>
       </motion.div>

@@ -8,6 +8,7 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import StatCard from '../components/Dashboard/StatCard';
 import { DistrictDistribution, RevenueTrend } from '../components/Dashboard/Charts';
 import MogadishuMap from '../components/Dashboard/MogadishuMap';
@@ -17,6 +18,7 @@ import { formatCurrency } from '../utils/format';
 
 const Dashboard: React.FC = () => {
   const { properties, tenants, payments, maintenance, currency, exchangeRate } = useAppStore();
+  const { t } = useTranslation();
 
   const totalRevenue = payments.reduce((acc, curr) => acc + curr.amount, 0);
   const occupancyRate = properties.length > 0 
@@ -42,8 +44,8 @@ const Dashboard: React.FC = () => {
     >
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>Mogadishu Portfolio Command</h1>
-          <p>Real-time oversight of your assets across all 17 Mogadishu districts.</p>
+          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>{t('dashboard.title')}</h1>
+          <p>{t('dashboard.subtitle')}</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
            <button className="premium-gradient" style={{ padding: '0.875rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -60,7 +62,7 @@ const Dashboard: React.FC = () => {
       }}>
         <StatCard 
           index={0}
-          label="Total Properties" 
+          label={t('common.properties')} 
           value={properties.length} 
           icon={Building2} 
           trend={{ value: 12, isPositive: true }}
@@ -68,7 +70,7 @@ const Dashboard: React.FC = () => {
         />
         <StatCard 
           index={1}
-          label="Active Tenants" 
+          label={t('dashboard.active_tenants')} 
           value={tenants.length} 
           icon={Users} 
           trend={{ value: 4, isPositive: true }}
@@ -76,7 +78,7 @@ const Dashboard: React.FC = () => {
         />
         <StatCard 
           index={2}
-          label="Monthly Revenue" 
+          label={t('dashboard.total_revenue')} 
           value={formatCurrency(totalRevenue, currency, exchangeRate)} 
           icon={Wallet} 
           trend={{ value: 8, isPositive: true }}
@@ -84,7 +86,7 @@ const Dashboard: React.FC = () => {
         />
         <StatCard 
           index={3}
-          label="Portfolio Health" 
+          label={t('dashboard.occupancy')} 
           value={`${occupancyRate}%`} 
           icon={TrendingUp} 
           trend={{ value: 2, isPositive: false }}
@@ -104,7 +106,7 @@ const Dashboard: React.FC = () => {
           <div className="card">
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
               <div>
-                <h3 style={{ margin: 0 }}>Revenue Performance</h3>
+                <h3 style={{ margin: 0 }}>{t('dashboard.revenue_trend')}</h3>
                 <p style={{ margin: 0, fontSize: '0.75rem' }}>Operational income trends (USD)</p>
               </div>
               <span className="premium-gradient" style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem', borderRadius: '20px' }}>Last 6 Months</span>
@@ -166,7 +168,7 @@ const Dashboard: React.FC = () => {
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 700, fontSize: '0.9375rem', marginBottom: '0.2rem' }}>{ticket.description}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Status: <span style={{fontWeight: 600, color: 'var(--text-main)'}}>{ticket.status}</span></div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t('common.status')}: <span style={{fontWeight: 600, color: 'var(--text-main)'}}>{ticket.status}</span></div>
               </div>
               <div style={{ height: '8px', width: '8px', borderRadius: '50%', background: ticket.priority === 'High' ? 'var(--danger)' : 'var(--warning)' }} />
             </motion.div>

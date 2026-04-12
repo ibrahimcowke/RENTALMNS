@@ -1,0 +1,130 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "properties": "Properties",
+    "tenants": "Tenants",
+    "maintenance": "Maintenance",
+    "finance": "Finance",
+    "districts": "Districts",
+    "search": "Search...",
+    "export": "Export",
+    "add": "Add",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "status": "Status",
+    "priority": "Priority",
+    "date": "Date",
+    "amount": "Amount",
+    "loading": "Loading...",
+    "no_data": "No data found"
+  },
+  "sidebar": {
+    "command_center": "COMMAND CENTER",
+    "portfolio": "PORTFOLIO",
+    "operations": "OPERATIONS",
+    "intelligence": "INTELLIGENCE",
+    "logout": "Logout",
+    "system": "SYSTEM"
+  },
+  "dashboard": {
+    "title": "Portfolio Command",
+    "subtitle": "Real-time oversight of the Mogadishu real estate registry.",
+    "total_revenue": "Total Revenue",
+    "active_tenants": "Active Tenants",
+    "vacant_units": "Vacant Units",
+    "pending_maintenance": "Open Repairs",
+    "revenue_trend": "Monthly Revenue Performance",
+    "market_districts": "Market District Hub",
+    "occupancy": "Occupancy",
+    "growth": "Growth"
+  },
+  "properties": {
+    "title": "Asset Registry",
+    "subtitle": "Market listed and managed properties in Mogadishu Portfolio.",
+    "register_button": "Register Property",
+    "all_districts": "All Districts",
+    "units": "Registry Units",
+    "rent_per_month": "per month",
+    "beds": "Beds",
+    "toilets": "Toilets",
+    "kitchens": "Kitchens",
+    "floors": "Floors",
+    "normal_house": "Normal House",
+    "wizard": {
+      "step1": "Basic Details",
+      "step2": "Location & Info",
+      "step3": "Pricing & Status"
+    }
+  },
+  "tenants": {
+    "title": "Resident Registry",
+    "subtitle": "Global directory of active residents and commercial tenants.",
+    "onboard_button": "Onboard Tenant",
+    "lease_period": "Registry Period",
+    "contact_details": "Contact Details",
+    "operational_status": "Operational Status"
+  },
+  "maintenance": {
+    "title": "Maintenance Command",
+    "subtitle": "Task tracking and technical service requests.",
+    "launch_button": "Launch New Request",
+    "open": "Open",
+    "in_progress": "In Progress",
+    "resolved": "Resolved",
+    "high_priority": "HIGH PRIORITY",
+    "low_priority": "LOW PRIORITY"
+  },
+  "finance": {
+    "title": "Financial HUB",
+    "subtitle": "Unified rent tracking and financial auditing.",
+    "total_collected": "Total Collected (MTD)",
+    "outstanding": "Outstanding Balance",
+    "expenses": "Operational Expenses",
+    "audit_trail": "Audit Trail",
+    "ref_token": "Ref Token",
+    "counterparty": "Counterparty",
+    "gross_amount": "Gross Amount",
+    "paid": "Paid",
+    "pending": "Pending"
+  },
+  "districts": {
+    "title": "District Intelligence",
+    "subtitle": "Neighborhood analytics and market yields across the 17 administrative districts of Banadir.",
+    "grid_view": "Regional Grid View",
+    "target_yield": "Target Yield",
+    "rent_range": "Rent Range",
+    "market_trends": "Market Trends",
+    "portfolio": "Portfolio",
+    "expand_title": "Registry Expanding",
+    "expand_desc": "11 more districts currently undergoing geospatial analysis and yield auditing for Q3 reports.",
+    "request_update": "Request Access Update",
+    "list": {
+      "Hodan": {
+        "desc": "The commercial heart of modern Mogadishu. High demand for office spaces and luxury villas.",
+        "tag": "High Growth"
+      },
+      "Abdiaziz": {
+        "desc": "Coastal district famous for Liido Beach. Prime location for tourism and high-end apartments.",
+        "tag": "Premium"
+      },
+      "Waberi": {
+        "desc": "Strategic location near Aden Adde Airport. Busy residential and logistical hub.",
+        "tag": "High Yield"
+      },
+      "Hamar Weyne": {
+        "desc": "The historic old city. Dense commercial activity with traditional shops and heritage sites.",
+        "tag": "Historic"
+      },
+      "Bondhere": {
+        "desc": "Centrally located with many government offices and quiet residential streets.",
+        "tag": "Stable"
+      },
+      "Wadajir": {
+        "desc": "Large residential district with diverse property types and expanding infrastructure.",
+        "tag": "Residential"
+      }
+    }
+  }
+}

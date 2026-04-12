@@ -17,7 +17,7 @@ export type District =
   | 'Yaqshid' 
   | 'Kahda';
 
-export type PropertyType = 'Villa' | 'Apartment' | 'Shop' | 'Office' | 'Warehouse';
+export type PropertyType = 'Villa' | 'Apartment' | 'Normal House' | 'Shop' | 'Office' | 'Warehouse';
 
 export interface Property {
   id: string;
@@ -30,6 +30,10 @@ export interface Property {
   status: 'Available' | 'Occupied' | 'Maintenance';
   units: number;
   image?: string;
+  beds?: number;
+  toilets?: number;
+  kitchens?: number;
+  floors?: number;
 }
 
 export interface Tenant {

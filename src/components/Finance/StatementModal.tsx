@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Download, Printer, Landmark, Building2, User } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Payment } from '../../types';
 import { formatCurrency } from '../../utils/format';
 import { useAppStore } from '../../store';
@@ -12,6 +13,7 @@ interface StatementModalProps {
 
 const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => {
   const { tenants, properties, currency, exchangeRate } = useAppStore();
+  const { t } = useTranslation();
 
   if (!payment) return null;
 
@@ -53,7 +55,7 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
             <div style={{ padding: '1rem 2rem', background: '#f8fafc', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ display: 'flex', gap: '1rem' }}>
                 <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
-                  <Printer size={16} /> Print
+                  <Printer size={16} /> {t('common.export')}
                 </button>
                 <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
                   <Download size={16} /> PDF
@@ -76,15 +78,15 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
                    <p style={{ margin: 0, fontSize: '0.875rem' }}>Somalia, East Africa</p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                   <h2 style={{ color: 'var(--primary)', marginBottom: '0.5rem' }}>OFFICIAL RECEIPT</h2>
+                   <h2 style={{ color: 'var(--primary)', marginBottom: '0.5rem' }}>{t('finance.audit_trail')}</h2>
                    <p style={{ margin: 0, fontWeight: 700 }}>#{payment.id}</p>
-                   <p style={{ margin: 0, color: '#64748b' }}>Date: {payment.date}</p>
+                   <p style={{ margin: 0, color: '#64748b' }}>{t('common.date')}: {payment.date}</p>
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', marginBottom: '3rem' }}>
                  <div>
-                    <h4 style={{ textTransform: 'uppercase', fontSize: '0.75rem', color: '#64748b', marginBottom: '1rem' }}>Bill From</h4>
+                    <h4 style={{ textTransform: 'uppercase', fontSize: '0.75rem', color: '#64748b', marginBottom: '1rem' }}>{t('finance.paid')} From</h4>
                     <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
                        <div style={{ fontWeight: 700, marginBottom: '0.25rem' }}>Mogadishu Property MGMT</div>
                        <p style={{ margin: 0, fontSize: '0.875rem' }}>Tax ID: Banadir-8890</p>
@@ -92,7 +94,7 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
                     </div>
                  </div>
                  <div>
-                    <h4 style={{ textTransform: 'uppercase', fontSize: '0.75rem', color: '#64748b', marginBottom: '1rem' }}>Bill To</h4>
+                    <h4 style={{ textTransform: 'uppercase', fontSize: '0.75rem', color: '#64748b', marginBottom: '1rem' }}>{t('finance.paid')} To</h4>
                     <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
                           <User size={14} />
@@ -107,9 +109,9 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
               <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '3rem' }}>
                  <thead>
                     <tr style={{ background: 'var(--primary)', color: 'white' }}>
-                       <th style={{ padding: '1rem', textAlign: 'left', borderRadius: 'var(--radius-md) 0 0 var(--radius-md)' }}>Description</th>
+                       <th style={{ padding: '1rem', textAlign: 'left', borderRadius: 'var(--radius-md) 0 0 var(--radius-md)' }}>{t('common.properties')}</th>
                        <th style={{ padding: '1rem', textAlign: 'center' }}>Qty</th>
-                       <th style={{ padding: '1rem', textAlign: 'right', borderRadius: '0 var(--radius-md) var(--radius-md) 0' }}>Total</th>
+                       <th style={{ padding: '1rem', textAlign: 'right', borderRadius: '0 var(--radius-md) var(--radius-md) 0' }}>{t('common.amount')}</th>
                     </tr>
                  </thead>
                  <tbody>
@@ -137,7 +139,7 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
                        <span>$0.00</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem 0', borderTop: '2px solid var(--text-main)', marginTop: '0.5rem', fontSize: '1.25rem', fontWeight: 700 }}>
-                       <span>Total</span>
+                       <span>{t('finance.gross_amount')}</span>
                        <span>{formatCurrency(payment.amount, currency, exchangeRate)}</span>
                     </div>
                  </div>
@@ -145,7 +147,7 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
 
               <div style={{ marginTop: '4rem', padding: '2rem', background: '#f8fafc', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
                  <Landmark size={24} style={{ marginBottom: '1rem', color: '#64748b' }} />
-                 <p style={{ margin: 0, fontWeight: 700, fontSize: '0.875rem' }}>Payment Status: {payment.status.toUpperCase()}</p>
+                 <p style={{ margin: 0, fontWeight: 700, fontSize: '0.875rem' }}>{t('common.status')}: {payment.status === 'Paid' ? t('finance.paid').toUpperCase() : t('finance.pending').toUpperCase()}</p>
                  <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', color: '#64748b' }}>Thank you for your business. For any queries, please visit our Hodan office.</p>
               </div>
             </div>

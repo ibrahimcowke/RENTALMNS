@@ -50,6 +50,10 @@ export const useAppStore = create<AppState>()(
           currency: 'USD',
           status: 'Occupied',
           units: 1,
+          beds: 4,
+          toilets: 3,
+          kitchens: 1,
+          floors: 2,
         },
         {
           id: '2',
@@ -61,6 +65,9 @@ export const useAppStore = create<AppState>()(
           currency: 'USD',
           status: 'Occupied',
           units: 1,
+          beds: 2,
+          toilets: 2,
+          kitchens: 1,
         },
         {
           id: '3',
@@ -83,6 +90,9 @@ export const useAppStore = create<AppState>()(
           currency: 'USD',
           status: 'Maintenance',
           units: 1,
+          beds: 1,
+          toilets: 1,
+          kitchens: 1,
         }
       ],
       tenants: [

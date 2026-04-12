@@ -1,18 +1,21 @@
 import React from 'react';
 import { MapPin, TrendingUp, Info, Building2, LayoutGrid } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import type { District } from '../types';
 
-const districtDetails: { name: District; description: string; tag: string; metric: string; trend: string }[] = [
-  { name: 'Hodan', description: 'The commercial heart of modern Mogadishu. High demand for office spaces and luxury villas.', tag: 'High Growth', metric: '8.4%', trend: 'up' },
-  { name: 'Abdiaziz', description: 'Coastal district famous for Liido Beach. Prime location for tourism and high-end apartments.', tag: 'Premium', metric: '9.2%', trend: 'up' },
-  { name: 'Waberi', description: 'Strategic location near Aden Adde Airport. Busy residential and logistical hub.', tag: 'High Yield', metric: '7.5%', trend: 'up' },
-  { name: 'Hamar Weyne', description: 'The historic old city. Dense commercial activity with traditional shops and heritage sites.', tag: 'Historic', metric: '6.8%', trend: 'stable' },
-  { name: 'Bondhere', description: 'Centrally located with many government offices and quiet residential streets.', tag: 'Stable', metric: '5.4%', trend: 'stable' },
-  { name: 'Wadajir', description: 'Large residential district with diverse property types and expanding infrastructure.', tag: 'Residential', metric: '4.2%', trend: 'up' },
+const districtDetails: { name: District; metric: string; trend: string }[] = [
+  { name: 'Hodan', metric: '8.4%', trend: 'up' },
+  { name: 'Abdiaziz', metric: '9.2%', trend: 'up' },
+  { name: 'Waberi', metric: '7.5%', trend: 'up' },
+  { name: 'Hamar Weyne', metric: '6.8%', trend: 'stable' },
+  { name: 'Bondhere', metric: '5.4%', trend: 'stable' },
+  { name: 'Wadajir', metric: '4.2%', trend: 'up' },
 ];
 
 const Districts: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -21,11 +24,11 @@ const Districts: React.FC = () => {
     >
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>District Intelligence</h1>
-          <p>Neighborhood analytics and market yields across the 17 administrative districts of Banadir.</p>
+          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>{t('districts.title')}</h1>
+          <p>{t('districts.subtitle')}</p>
         </div>
         <button className="glass-panel" style={{ padding: '0.75rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, fontSize: '0.875rem' }}>
-          <LayoutGrid size={18} /> Regional Grid View
+          <LayoutGrid size={18} /> {t('districts.grid_view')}
         </button>
       </header>
 
@@ -69,11 +72,13 @@ const Districts: React.FC = () => {
                 borderRadius: '20px',
                 letterSpacing: '0.05em'
               }}>
-                {district.tag}
+                {t(`districts.list.${district.name}.tag`)}
               </span>
             </div>
 
-            <p style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>{district.description}</p>
+            <p style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+              {t(`districts.list.${district.name}.desc`)}
+            </p>
 
             <div style={{ 
               display: 'grid', 
@@ -86,23 +91,23 @@ const Districts: React.FC = () => {
               border: '1px solid rgba(0,0,0,0.02)'
             }}>
               <div>
-                <div style={{ fontSize: '0.6875rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Target Yield</div>
+                <div style={{ fontSize: '0.6875rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.05em', marginBottom: '0.25rem' }}>{t('districts.target_yield')}</div>
                 <div style={{ fontWeight: 800, fontSize: '1.125rem', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                    {district.metric} <TrendingUp size={16} color="var(--success)" />
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: '0.6875rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Rent Range</div>
+                <div style={{ fontSize: '0.6875rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.05em', marginBottom: '0.25rem' }}>{t('districts.rent_range')}</div>
                 <div style={{ fontWeight: 800, fontSize: '1.125rem', color: 'var(--text-main)' }}>$600 - $1.8k</div>
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '0.5rem' }}>
                <button style={{ flex: 1, background: 'white', border: '1px solid #e2e8f0', padding: '0.75rem', fontSize: '0.8125rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', color: 'var(--text-main)' }}>
-                 <TrendingUp size={16} /> Market Trends
+                 <TrendingUp size={16} /> {t('districts.market_trends')}
                </button>
                <button className="premium-gradient" style={{ flex: 1, padding: '0.75rem', fontSize: '0.8125rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem' }}>
-                 <Building2 size={16} /> Portfolio
+                 <Building2 size={16} /> {t('districts.portfolio')}
                </button>
             </div>
           </motion.div>
@@ -127,9 +132,9 @@ const Districts: React.FC = () => {
           <div style={{ background: '#e2e8f0', padding: '1rem', borderRadius: '50%', marginBottom: '1.25rem' }}>
              <Info size={36} color="var(--primary)" />
           </div>
-          <h4 style={{ margin: '0 0 0.5rem 0', fontWeight: 800 }}>Registry Expanding</h4>
-          <p style={{ fontSize: '0.875rem' }}>11 more districts currently undergoing geospatial analysis and yield auditing for Q3 reports.</p>
-          <button style={{ marginTop: '1.5rem', background: 'transparent', border: '1px solid #cbd5e1', padding: '0.6rem 1.25rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)' }}>Request Access Update</button>
+          <h4 style={{ margin: '0 0 0.5rem 0', fontWeight: 800 }}>{t('districts.expand_title')}</h4>
+          <p style={{ fontSize: '0.875rem' }}>{t('districts.expand_desc')}</p>
+          <button style={{ marginTop: '1.5rem', background: 'transparent', border: '1px solid #cbd5e1', padding: '0.6rem 1.25rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)' }}>{t('districts.request_update')}</button>
         </motion.div>
       </div>
     </motion.div>

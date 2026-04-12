@@ -3,22 +3,28 @@ import {
   Plus, 
   MapPin, 
   Search, 
-  MoreVertical, 
   Building2, 
   Trash2, 
-  Edit 
+  Edit,
+  Bed,
+  Bath,
+  ChefHat,
+  Layers
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { District } from '../types';
+import type { District, Property } from '../types';
 import { formatCurrency } from '../utils/format';
 import PropertyWizard from '../components/PropertyWizard';
 
 const Properties: React.FC = () => {
   const { properties, deleteProperty, currency, exchangeRate } = useAppStore();
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<string>('All');
   const [search, setSearch] = useState('');
   const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [editingProperty, setEditingProperty] = useState<Property | undefined>(undefined);
 
   const districts: (District | 'All')[] = ['All', 'Hodan', 'Abdiaziz', 'Waberi', 'Wadajir', 'Hamar Weyne'];
 
@@ -29,6 +35,21 @@ const Properties: React.FC = () => {
     return matchesFilter && matchesSearch;
   });
 
+  const getDistrictLabel = (d: string) => {
+    if (d === 'All') return t('properties.all_districts');
+    return d;
+  };
+
+  const handleEdit = (p: Property) => {
+    setEditingProperty(p);
+    setIsWizardOpen(true);
+  };
+
+  const closeWizard = () => {
+    setIsWizardOpen(false);
+    setEditingProperty(undefined);
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -37,8 +58,8 @@ const Properties: React.FC = () => {
     >
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>Asset Registry</h1>
-          <p>Market listed and managed properties in Mogadishu Portfolio.</p>
+          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>{t('properties.title')}</h1>
+          <p>{t('properties.subtitle')}</p>
         </div>
         <button 
           onClick={() => setIsWizardOpen(true)}
@@ -51,7 +72,7 @@ const Properties: React.FC = () => {
           }}
         >
           <Plus size={20} />
-          Register Property
+          {t('properties.register_button')}
         </button>
       </header>
 
@@ -82,7 +103,7 @@ const Properties: React.FC = () => {
                 boxShadow: filter === d ? 'var(--shadow-md)' : 'none'
               }}
             >
-              {d}
+              {getDistrictLabel(d)}
             </button>
           ))}
         </div>
@@ -91,7 +112,7 @@ const Properties: React.FC = () => {
           <Search size={18} color="#94a3b8" />
           <input 
             type="text" 
-            placeholder="Search assets by name, address or ID..." 
+            placeholder={t('common.search')} 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -164,9 +185,43 @@ const Properties: React.FC = () => {
                     <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '-0.02em' }}>
                       {formatCurrency(property.rentAmount, currency, exchangeRate)}
                     </div>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>per month</div>
+                    <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>{t('properties.rent_per_month')}</div>
                   </div>
                 </div>
+
+                {/* Architectural Features */}
+                {(property.beds || property.toilets || property.kitchens) && (
+                  <div style={{ 
+                    display: 'flex', 
+                    gap: '1rem', 
+                    marginTop: '1.25rem',
+                    background: '#f8fafc',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '12px',
+                    border: '1px solid #f1f5f9'
+                  }}>
+                    {property.beds > 0 && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>
+                        <Bed size={14} color="var(--primary)" /> {property.beds} {t('properties.beds')}
+                      </div>
+                    )}
+                    {property.toilets > 0 && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>
+                        <Bath size={14} color="var(--primary)" /> {property.toilets} {t('properties.toilets')}
+                      </div>
+                    )}
+                    {property.kitchens > 0 && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>
+                        <ChefHat size={14} color="var(--primary)" /> {property.kitchens} {t('properties.kitchens')}
+                      </div>
+                    )}
+                    {property.floors > 0 && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>
+                        <Layers size={14} color="var(--primary)" /> {property.floors} {t('properties.floors')}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <p style={{ 
                   fontSize: '0.875rem', 
@@ -199,20 +254,24 @@ const Properties: React.FC = () => {
                     gap: '0.5rem'
                   }}>
                     <Building2 size={16} color="var(--primary-light)" />
-                    {property.units} Registry Units
+                    {property.units} {t('properties.units')}
                   </div>
-                  <div style={{ display: 'flex', gap: '0.25rem' }}>
-                    <button style={{ background: 'white', border: '1px solid #e2e8f0', color: 'var(--text-muted)', padding: '0.5rem', borderRadius: '10px' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button 
+                      onClick={() => handleEdit(property)}
+                      style={{ background: 'white', border: '1px solid #e2e8f0', color: 'var(--text-muted)', padding: '0.5rem', borderRadius: '10px' }}
+                    >
                       <Edit size={18} />
                     </button>
                     <button 
-                      onClick={() => deleteProperty(property.id)}
+                      onClick={() => {
+                        if(window.confirm('Are you sure you want to delete this property?')) {
+                          deleteProperty(property.id);
+                        }
+                      }}
                       style={{ background: 'white', border: '1px solid #fee2e2', color: 'var(--danger)', padding: '0.5rem', borderRadius: '10px' }}
                     >
                       <Trash2 size={18} />
-                    </button>
-                    <button style={{ background: 'white', border: '1px solid #e2e8f0', color: 'var(--text-muted)', padding: '0.5rem', borderRadius: '10px' }}>
-                      <MoreVertical size={18} />
                     </button>
                   </div>
                 </div>
@@ -241,7 +300,7 @@ const Properties: React.FC = () => {
           }}>
             <Building2 size={48} />
           </div>
-          <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>No registry matches</h3>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>{t('common.no_data')}</h3>
           <p style={{ color: 'var(--text-muted)' }}>We couldn't find any properties matching your current search criteria.</p>
           <button 
             onClick={() => {setSearch(''); setFilter('All');}}
@@ -254,7 +313,8 @@ const Properties: React.FC = () => {
 
       <PropertyWizard 
         isOpen={isWizardOpen} 
-        onClose={() => setIsWizardOpen(false)} 
+        onClose={closeWizard} 
+        initialData={editingProperty}
       />
     </motion.div>
   );

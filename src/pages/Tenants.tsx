@@ -10,11 +10,13 @@ import {
   UserCheck,
   Globe
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
 import { motion } from 'framer-motion';
 
 const Tenants: React.FC = () => {
   const { tenants, properties } = useAppStore();
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const filteredTenants = tenants.filter(t => 
@@ -34,8 +36,8 @@ const Tenants: React.FC = () => {
     >
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>Resident Registry</h1>
-          <p>Global directory of active residents and commercial tenants across the Mogadishu portfolio.</p>
+          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>{t('tenants.title')}</h1>
+          <p>{t('tenants.subtitle')}</p>
         </div>
         <button className="premium-gradient" style={{ 
           padding: '0.875rem 1.75rem', 
@@ -44,7 +46,7 @@ const Tenants: React.FC = () => {
           gap: '0.6rem'
         }}>
           <Plus size={20} />
-          Onboard Tenant
+          {t('tenants.onboard_button')}
         </button>
       </header>
 
@@ -61,14 +63,14 @@ const Tenants: React.FC = () => {
             <Search size={18} color="#94a3b8" />
             <input 
               type="text" 
-              placeholder="Search by name, contact, or assigned unit ID..." 
+              placeholder={t('common.search')} 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           
           <div style={{ display: 'flex', gap: '0.75rem' }}>
-             <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.6rem 1.25rem', color: 'var(--text-main)', fontSize: '0.8125rem', fontWeight: 700, borderRadius: '10px' }}>Export PDF</button>
+             <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.6rem 1.25rem', color: 'var(--text-main)', fontSize: '0.8125rem', fontWeight: 700, borderRadius: '10px' }}>{t('common.export')} PDF</button>
              <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.6rem 1.25rem', color: 'var(--text-main)', fontSize: '0.8125rem', fontWeight: 700, borderRadius: '10px' }}>Live Filters</button>
           </div>
         </div>
@@ -77,11 +79,11 @@ const Tenants: React.FC = () => {
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ background: 'var(--bg-main)' }}>
-                <th style={tableHeaderStyle}>Resident / ID</th>
+                <th style={tableHeaderStyle}>{t('tenants.title')} / ID</th>
                 <th style={tableHeaderStyle}>Assigned Unit</th>
-                <th style={tableHeaderStyle}>Registry Period</th>
-                <th style={tableHeaderStyle}>Contact Details</th>
-                <th style={tableHeaderStyle}>Operational Status</th>
+                <th style={tableHeaderStyle}>{t('tenants.lease_period')}</th>
+                <th style={tableHeaderStyle}>{t('tenants.contact_details')}</th>
+                <th style={tableHeaderStyle}>{t('tenants.operational_status')}</th>
                 <th style={tableHeaderStyle}></th>
               </tr>
             </thead>
@@ -146,7 +148,7 @@ const Tenants: React.FC = () => {
                       gap: '0.35rem'
                     }}>
                       <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'currentColor' }} />
-                      {tenant.status}
+                      {tenant.status === 'Active' ? (i18n.language === 'so' ? 'Firfircoon' : 'Active') : (i18n.language === 'so' ? 'Lagu leeyahay' : 'Due')}
                     </span>
                   </td>
                   <td style={tableCellStyle}>
@@ -181,4 +183,5 @@ const tableCellStyle: React.CSSProperties = {
 };
 
 export default Tenants;
+;
 

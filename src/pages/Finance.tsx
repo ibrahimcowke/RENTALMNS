@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Receipt
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAppStore } from '../store';
 import StatCard from '../components/Dashboard/StatCard';
@@ -19,6 +20,7 @@ import type { Payment } from '../types';
 
 const Finance: React.FC = () => {
   const { payments, properties, tenants, currency, exchangeRate } = useAppStore();
+  const { t } = useTranslation();
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
 
   const getTenantName = (id: string) => tenants.find(t => t.id === id)?.name || 'Former Tenant';
@@ -32,31 +34,31 @@ const Finance: React.FC = () => {
     >
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>Financial HUB</h1>
-          <p>Unified rent tracking and financial performance analytics for the Banadir region.</p>
+          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>{t('finance.title')}</h1>
+          <p>{t('finance.subtitle')}</p>
         </div>
         <button className="glass-panel" style={{ padding: '0.75rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.6rem', fontWeight: 700, fontSize: '0.875rem' }}>
-          <TrendingUp size={18} /> Performance Reports
+          <TrendingUp size={18} /> {t('common.date')} Reports
         </button>
       </header>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
         <StatCard 
-          label="Total Collected (MTD)" 
+          label={t('finance.total_collected')} 
           value={formatCurrency(14500, currency, exchangeRate)} 
           icon={ArrowUpRight} 
           trend={{ value: 15, isPositive: true }}
           color="var(--success)"
         />
         <StatCard 
-          label="Outstanding Balance" 
+          label={t('finance.outstanding')} 
           value={formatCurrency(2800, currency, exchangeRate)} 
           icon={Clock} 
           trend={{ value: 5, isPositive: false }}
           color="var(--warning)"
         />
         <StatCard 
-          label="Operational Expenses" 
+          label={t('finance.expenses')} 
           value={formatCurrency(3100, currency, exchangeRate)} 
           icon={ArrowDownLeft} 
           trend={{ value: 2, isPositive: true }}
@@ -73,14 +75,14 @@ const Finance: React.FC = () => {
           alignItems: 'center',
           background: 'rgba(255,255,255,0.5)'
         }}>
-          <h3 style={{ fontSize: '1.125rem', fontWeight: 800 }}>Audit Trail</h3>
+          <h3 style={{ fontSize: '1.125rem', fontWeight: 800 }}>{t('finance.audit_trail')}</h3>
           <div style={{ display: 'flex', gap: '1rem' }}>
              <div className="search-bar" style={{ width: '350px' }}>
                <Search size={18} color="#94a3b8" />
-               <input type="text" placeholder="Search reference, tenant or property..." />
+               <input type="text" placeholder={t('common.search')} />
              </div>
              <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.6rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.6rem', fontWeight: 700, fontSize: '0.8125rem', borderRadius: '10px' }}>
-               <Download size={18} /> Export CSV
+               <Download size={18} /> {t('common.export')} CSV
              </button>
           </div>
         </div>
@@ -94,7 +96,7 @@ const Finance: React.FC = () => {
                 <th style={headerStyle}>Linked Asset</th>
                 <th style={headerStyle}>Processing Date</th>
                 <th style={headerStyle}>Gross Amount</th>
-                <th style={headerStyle}>Authorization</th>
+                <th style={headerStyle}>{t('common.status')}</th>
               </tr>
             </thead>
             <tbody>
@@ -145,7 +147,7 @@ const Finance: React.FC = () => {
                       letterSpacing: '0.05em'
                     }}>
                       {payment.status === 'Paid' ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
-                      {payment.status}
+                      {payment.status === 'Paid' ? (t('finance.paid')) : (t('finance.pending'))}
                     </div>
                   </td>
                 </motion.tr>

@@ -9,11 +9,13 @@ import {
   CheckCircle2,
   PlayCircle
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAppStore } from '../store';
 
 const Maintenance: React.FC = () => {
   const { maintenance, properties } = useAppStore();
+  const { t } = useTranslation();
 
   const getPropertyName = (id: string) => properties.find(p => p.id === id)?.name || 'Property';
 
@@ -25,8 +27,8 @@ const Maintenance: React.FC = () => {
     >
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>Maintenance Command</h1>
-          <p>Task tracking and technical service requests across the registry.</p>
+          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>{t('maintenance.title')}</h1>
+          <p>{t('maintenance.subtitle')}</p>
         </div>
         <button className="premium-gradient" style={{ 
           padding: '0.875rem 1.75rem', 
@@ -35,16 +37,16 @@ const Maintenance: React.FC = () => {
           gap: '0.6rem' 
         }}>
           <Plus size={20} />
-          Launch New Request
+          {t('maintenance.launch_button')}
         </button>
       </header>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', alignItems: 'start' }}>
         {/* Kanban-style Columns */}
         {[
-          { key: 'Open', icon: AlertOctagon, color: 'var(--danger)' },
-          { key: 'In Progress', icon: PlayCircle, color: 'var(--warning)' },
-          { key: 'Resolved', icon: CheckCircle2, color: 'var(--success)' }
+          { key: 'Open', label: t('maintenance.open'), icon: AlertOctagon, color: 'var(--danger)' },
+          { key: 'In Progress', label: t('maintenance.in_progress'), icon: PlayCircle, color: 'var(--warning)' },
+          { key: 'Resolved', label: t('maintenance.resolved'), icon: CheckCircle2, color: 'var(--success)' }
         ].map((status) => (
           <div key={status.key} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div style={{ 
@@ -57,7 +59,7 @@ const Maintenance: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <div style={{ color: status.color }}><status.icon size={18} /></div>
                 <h3 style={{ textTransform: 'uppercase', fontSize: '0.8125rem', letterSpacing: '0.1em', color: 'var(--text-main)', fontWeight: 800 }}>
-                  {status.key} <span style={{ opacity: 0.5, marginLeft: '0.25rem' }}>({maintenance.filter(t => t.status === status.key).length})</span>
+                  {status.label} <span style={{ opacity: 0.5, marginLeft: '0.25rem' }}>({maintenance.filter(t => t.status === status.key).length})</span>
                 </h3>
               </div>
               <Filter size={16} color="var(--text-muted)" style={{ cursor: 'pointer' }} />
@@ -84,7 +86,7 @@ const Maintenance: React.FC = () => {
                       color: ticket.priority === 'High' ? 'var(--danger)' : 'var(--primary-light)',
                       letterSpacing: '0.02em'
                     }}>
-                      {ticket.priority} PRIORITY
+                      {ticket.priority === 'High' ? t('maintenance.high_priority') : t('maintenance.low_priority')}
                     </span>
                     <button style={{ background: 'transparent', padding: 0 }}><MoreVertical size={18} color="#94a3b8" /></button>
                   </div>
@@ -126,7 +128,7 @@ const Maintenance: React.FC = () => {
                   backdropFilter: 'blur(4px)'
                 }}>
                   <div style={{ marginBottom: '0.5rem', opacity: 0.5 }}><status.icon size={32} style={{ margin: '0 auto' }} /></div>
-                  No active items in {status.key}
+                  {t('common.no_data')} {status.label}
                 </div>
               )}
             </div>

@@ -1,0 +1,130 @@
+{
+  "common": {
+    "dashboard": "Dashboard-ka",
+    "properties": "Guryaha",
+    "tenants": "Kiraystayaasha",
+    "maintenance": "Dayactirka",
+    "finance": "Lacagaha",
+    "districts": "Degmooyinka",
+    "search": "Raadi...",
+    "export": "Dhoofi",
+    "add": "Ku dar",
+    "save": "Keydi",
+    "cancel": "Ka noqo",
+    "delete": "Masax",
+    "edit": "Wax ka beddel",
+    "status": "Xaaladda",
+    "priority": "Mudnaanta",
+    "date": "Taariikhda",
+    "amount": "Cadadka",
+    "loading": "Waa socotaa...",
+    "no_data": "Macluumaad lama helin"
+  },
+  "sidebar": {
+    "command_center": "XARUNTA MAAMULKA",
+    "portfolio": "HANTIDA",
+    "operations": "SHAQOOYINKA",
+    "intelligence": "WARBIXINNADA",
+    "logout": "Ka bax",
+    "system": "NIDAAMKA"
+  },
+  "dashboard": {
+    "title": "Maamulka Hantida",
+    "subtitle": "Kormeerka tooska ah ee diiwaanka guryaha Muqdisho.",
+    "total_revenue": "Wadarta Dakhliga",
+    "active_tenants": "Kiraystayaasha Firfircoon",
+    "vacant_units": "Qaybaha Bannaan",
+    "pending_maintenance": "Dayactirrada Furan",
+    "revenue_trend": "Waxqabadka Dakhliga Bishii",
+    "market_districts": "Xarunta Suuqa Degmooyinka",
+    "occupancy": "Degganaanshaha",
+    "growth": "Koraanka"
+  },
+  "properties": {
+    "title": "Diiwaanka Hantida",
+    "subtitle": "Guryaha suuqa ku jira iyo kuwa la maamulo ee Muqdisho.",
+    "register_button": "Diiwaangeli Guri",
+    "all_districts": "Dhammaan Degmooyinka",
+    "units": "Qaybaha Diiwaangashan",
+    "rent_per_month": "bishii",
+    "beds": "Sariiraha",
+    "toilets": "Suuliyada",
+    "kitchens": "Jikooyinka",
+    "floors": "Dabaqyada",
+    "normal_house": "Guri Caadi ah",
+    "wizard": {
+      "step1": "Warbixinta Guud",
+      "step2": "Goobta & Macluumaadka",
+      "step3": "Qiimaha & Xaaladda"
+    }
+  },
+  "tenants": {
+    "title": "Diiwaanka Kiraystayaasha",
+    "subtitle": "Diiwaanka guud ee dadka deggan iyo ganacsiyada kiraystayaasha ah.",
+    "onboard_button": "Diiwaangeli Kirayste",
+    "lease_period": "Muddada Kirada",
+    "contact_details": "Macluumaadka Xiriirka",
+    "operational_status": "Xaaladda Shaqada"
+  },
+  "maintenance": {
+    "title": "Maareynta Dayactirka",
+    "subtitle": "Lasocodka hawlaha iyo codsiyada adeegga farsamada.",
+    "launch_button": "Bilow Codsi Cusub",
+    "open": "Furan",
+    "in_progress": "Waa socotaa",
+    "resolved": "La xalliyey",
+    "high_priority": "MUDNAAN SARE",
+    "low_priority": "MUDNAAN HOOSE"
+  },
+  "finance": {
+    "title": "Xarunta Maaliyadda",
+    "subtitle": "Lasocodka kirada iyo hantidhowrka maaliyadda.",
+    "total_collected": "Wadarta la aruuriyey (Bishaan)",
+    "outstanding": "Haraaga dhiman",
+    "expenses": "Kharashka Hawlgalka",
+    "audit_trail": "Diiwaanka Hubinta",
+    "ref_token": "Summadda Tixraaca",
+    "counterparty": "Qofka/Shirkadda",
+    "gross_amount": "Cadadka Guud",
+    "paid": "La Bixiyay",
+    "pending": "Sugaya"
+  },
+  "districts": {
+    "title": "Warbixinta Degmooyinka",
+    "subtitle": "Falanqaynta xaafadaha iyo faa'iidada suuqa ee 17-ka degmo ee Banaadir.",
+    "grid_view": "Muuqaalka Guud ee Gobolka",
+    "target_yield": "Faa'iidada la hiigsanayo",
+    "rent_range": "Heerka Kirada",
+    "market_trends": "Isbeddellada Suuqa",
+    "portfolio": "Hantida",
+    "expand_title": "Diiwaanka oo weynaanaya",
+    "expand_desc": "11 degmo oo kale ayaa hadda lagu sameynayaa falanqayn dhul iyo hantidhowrka waxsoosaarka ee warbixinnada Q3.",
+    "request_update": "Codso Cusboonaysiin",
+    "list": {
+      "Hodan": {
+        "desc": "Xarunta ganacsiga ee Muqdishada casriga ah. Baahi weyn oo loo qabo xafiisyo iyo guryo raaxo leh.",
+        "tag": "Koraan Sare"
+      },
+      "Abdiaziz": {
+        "desc": "Degmo ku taal xeebta kuna caan ah xeebta Liido. Goob muhiim u ah dalxiiska iyo guryaha dabaqyada ee qaaliga ah.",
+        "tag": "Qaali"
+      },
+      "Waberi": {
+        "desc": "Goob istiraatiiji ah oo u dhow Garoonka Aden Adde. Xarun mashquul badan oo deegaan iyo sahayda ah.",
+        "tag": "Waxsoosaar Sare"
+      },
+      "Hamar Weyne": {
+        "desc": "Magaaladii hore ee taariikhiga ahayd. Hawlo ganacsi oo cufan oo leh dukaamo dhaqameed iyo goobo dhaxalka ah.",
+        "tag": "Taariikhi"
+      },
+      "Bondhere": {
+        "desc": "Waxay ku taal bartamaha iyadoo leh xafiisyo dowladeed oo badan iyo waddooyin deegaan oo deggan.",
+        "tag": "Deggan"
+      },
+      "Wadajir": {
+        "desc": "Degmo weyn o deegaan ah oo leh noocyo kala duwan oo hanti ah iyo kaabayaal sii kordhaya.",
+        "tag": "Deegaan"
+      }
+    }
+  }
+}

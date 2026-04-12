@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Bell, DollarSign, Globe } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
 import './Layout.css';
 
@@ -9,16 +10,44 @@ interface TopbarProps {
 
 const Topbar: React.FC<TopbarProps> = ({ onOpenNotifications }) => {
   const { currency, setCurrency, notifications } = useAppStore();
+  const { t, i18n } = useTranslation();
   const unreadCount = notifications.filter(n => !n.read).length;
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'so' : 'en';
+    i18n.changeLanguage(newLang);
+  };
 
   return (
     <header className="topbar">
       <div className="search-bar">
         <Search size={18} color="#94a3b8" />
-        <input type="text" placeholder="Search portfolio, units, residents..." />
+        <input type="text" placeholder={t('common.search')} />
       </div>
 
       <div className="user-profile">
+        {/* Language Switcher */}
+        <button 
+          onClick={toggleLanguage}
+          style={{ 
+            background: 'white', 
+            border: '1px solid #e2e8f0', 
+            padding: '0.4rem 0.75rem', 
+            borderRadius: '10px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.5rem',
+            marginRight: '1rem',
+            cursor: 'pointer',
+            boxShadow: 'var(--shadow-sm)'
+          }}
+        >
+          <Globe size={14} color="var(--primary)" />
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>
+            {i18n.language === 'en' ? 'SOM' : 'ENG'}
+          </span>
+        </button>
+
         {/* Currency Switcher */}
         <div style={{ 
           display: 'flex', 
@@ -60,7 +89,7 @@ const Topbar: React.FC<TopbarProps> = ({ onOpenNotifications }) => {
               color: currency === 'SOS' ? 'var(--primary)' : '#64748b'
             }}
           >
-            <Globe size={13} /> SOS
+            SOS
           </button>
         </div>
 
