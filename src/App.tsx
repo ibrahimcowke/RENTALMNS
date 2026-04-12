@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import NotificationCenter from './components/NotificationCenter';
@@ -8,11 +8,21 @@ import Tenants from './pages/Tenants';
 import Finance from './pages/Finance';
 import Maintenance from './pages/Maintenance';
 import Districts from './pages/Districts';
+import { useAppStore } from './store';
 import './index.css';
 
 const App: React.FC = () => {
+  const { fetchInitialData, loading, error } = useAppStore();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
+  useEffect(() => {
+    fetchInitialData();
+  }, [fetchInitialData]);
+
+  if (loading && activeTab === 'dashboard') {
+     return <div className="loading-screen">Loading Intelligence...</div>;
+  }
 
   const renderContent = () => {
     switch (activeTab) {

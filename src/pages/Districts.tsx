@@ -1,6 +1,5 @@
 import React from 'react';
-import { MapPin, TrendingUp, Info, Building2, Eye, ShieldCheck, Zap } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { MapPin, TrendingUp, Building2, Eye, ShieldCheck, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAppStore } from '../store';
 import type { District } from '../types';
@@ -23,7 +22,6 @@ const getIntelligenceMetrics = (district: string) => {
 };
 
 const Districts: React.FC = () => {
-  const { t } = useTranslation();
   const { properties } = useAppStore();
 
   return (

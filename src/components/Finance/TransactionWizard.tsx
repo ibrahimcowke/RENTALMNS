@@ -51,20 +51,33 @@ const TransactionWizard: React.FC<TransactionWizardProps> = ({ isOpen, onClose }
     }
   }, [formData.propertyId, properties]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    addPayment({
-      ...formData as Payment,
-      id: Math.random().toString(36).substr(2, 9)
-    });
-    
-    addNotification({
-      type: 'success',
-      title: 'Payment Recorded',
-      message: `Transaction of $${formData.amount} for ${formData.month} has been logged.`
-    });
-    
-    onClose();
+    try {
+      await addPayment({
+        propertyId: formData.propertyId || '',
+        tenantId: formData.tenantId || '',
+        amount: formData.amount || 0,
+        date: formData.date || '',
+        month: formData.month || '',
+        status: formData.status || 'Paid'
+      });
+      
+      addNotification({
+        type: 'success',
+        title: 'Payment Recorded',
+        message: `Transaction of $${formData.amount} for ${formData.month} has been logged.`
+      });
+      
+      onClose();
+    } catch (error) {
+       console.error('Failed to record payment:', error);
+       addNotification({
+         type: 'error',
+         title: 'Error',
+         message: 'Failed to record payment to the database.'
+       });
+    }
   };
 
   if (!isOpen) return null;

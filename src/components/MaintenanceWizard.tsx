@@ -44,27 +44,38 @@ const MaintenanceWizard: React.FC<MaintenanceWizardProps> = ({ isOpen, onClose, 
     }
   }, [initialData, isOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (initialData) {
-      updateMaintenance(initialData.id, formData);
-      addNotification({
-        type: 'info',
-        title: 'Ticket Updated',
-        message: 'Maintenance request details have been synchronized.'
-      });
-    } else {
-      addMaintenance({
-        ...formData as MaintenanceTicket,
-        id: Math.random().toString(36).substr(2, 9)
-      });
-      addNotification({
-        type: 'warning',
-        title: 'New Request',
-        message: 'A maintenance ticket has been registered and queued for dispatch.'
-      });
+    try {
+      if (initialData) {
+        await updateMaintenance(initialData.id, formData);
+        addNotification({
+          type: 'info',
+          title: 'Ticket Updated',
+          message: 'Maintenance request details have been synchronized.'
+        });
+      } else {
+        await addMaintenance({
+          propertyId: formData.propertyId || '',
+          description: formData.description || '',
+          priority: formData.priority || 'Medium',
+          status: formData.status || 'Open'
+        });
+        addNotification({
+          type: 'warning',
+          title: 'New Request',
+          message: 'A maintenance ticket has been registered and queued for dispatch.'
+        });
+      }
+      onClose();
+    } catch (error) {
+       console.error('Failed to save maintenance ticket:', error);
+       addNotification({
+         type: 'error',
+         title: 'Error',
+         message: 'Failed to save maintenance request to the database.'
+       });
     }
-    onClose();
   };
 
   if (!isOpen) return null;

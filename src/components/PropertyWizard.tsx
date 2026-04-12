@@ -83,28 +83,35 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose, initia
   const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, 3));
   const handleBack = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
-  const handleSubmit = () => {
-    if (initialData) {
-      updateProperty(initialData.id, formData);
-      addNotification({
-        type: 'success',
-        title: t('common.save'),
-        message: `${formData.name} was successfully updated.`
-      });
-    } else {
-      const newProperty: Property = {
-        ...formData,
-        id: Math.random().toString(36).substr(2, 9),
-        currency: 'USD'
-      };
-      addProperty(newProperty);
-      addNotification({
-        type: 'success',
-        title: t('common.save'),
-        message: `${formData.name} was successfully added.`
-      });
+  const handleSubmit = async () => {
+    try {
+      if (initialData) {
+        await updateProperty(initialData.id, formData);
+        addNotification({
+          type: 'success',
+          title: t('common.save'),
+          message: `${formData.name} was successfully updated.`
+        });
+      } else {
+        await addProperty({
+          ...formData,
+          currency: 'USD'
+        });
+        addNotification({
+          type: 'success',
+          title: t('common.save'),
+          message: `${formData.name} was successfully added.`
+        });
+      }
+      onClose();
+    } catch (error) {
+       console.error('Failed to save property:', error);
+       addNotification({
+         type: 'error',
+         title: 'Error',
+         message: 'Failed to save property to the database.'
+       });
     }
-    onClose();
   };
 
   const updateField = (field: string, value: any) => {

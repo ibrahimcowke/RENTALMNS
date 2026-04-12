@@ -62,28 +62,41 @@ const TenantWizard: React.FC<TenantWizardProps> = ({ isOpen, onClose, initialDat
   const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, 3));
   const handlePrev = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
-  const handleSubmit = () => {
-    if (initialData) {
-      updateTenant(initialData.id, formData);
-      addNotification({
-        type: 'success',
-        title: 'Tenant Updated',
-        message: `${formData.name}'s lease records have been refreshed.`
-      });
-    } else {
-      addTenant({
-        ...formData as Tenant,
-        id: Math.random().toString(36).substr(2, 9),
-        status: 'Active'
-      });
-      addNotification({
-        type: 'success',
-        title: 'Tenant Onboarded',
-        message: `${formData.name} has been successfully registered.`
-      });
+  const handleSubmit = async () => {
+    try {
+      if (initialData) {
+        await updateTenant(initialData.id, formData);
+        addNotification({
+          type: 'success',
+          title: 'Tenant Updated',
+          message: `${formData.name}'s lease records have been refreshed.`
+        });
+      } else {
+        await addTenant({
+          name: formData.name || '',
+          phone: formData.phone || '',
+          email: formData.email,
+          propertyId: formData.propertyId || '',
+          leaseStart: formData.leaseStart || '',
+          leaseEnd: formData.leaseEnd || '',
+          status: 'Active'
+        });
+        addNotification({
+          type: 'success',
+          title: 'Tenant Onboarded',
+          message: `${formData.name} has been successfully registered.`
+        });
+      }
+      onClose();
+      setCurrentStep(1);
+    } catch (error) {
+       console.error('Failed to save tenant:', error);
+       addNotification({
+         type: 'error',
+         title: 'Error',
+         message: 'Failed to save resident record to the database.'
+       });
     }
-    onClose();
-    setCurrentStep(1);
   };
 
   if (!isOpen) return null;

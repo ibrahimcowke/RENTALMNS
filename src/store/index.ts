@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { supabase } from '../lib/supabase';
 import type { Property, Tenant, Payment, MaintenanceTicket } from '../types';
 
 export interface Notification {
@@ -18,190 +18,208 @@ interface AppState {
   maintenance: MaintenanceTicket[];
   currency: 'USD';
   notifications: Notification[];
+  loading: boolean;
+  error: string | null;
   
   // Actions
-  addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => void;
-  markNotificationRead: (id: string) => void;
-  clearNotifications: () => void;
+  fetchInitialData: () => Promise<void>;
   
-  addProperty: (property: Property) => void;
-  updateProperty: (id: string, property: Partial<Property>) => void;
-  deleteProperty: (id: string) => void;
+  addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => Promise<void>;
+  markNotificationRead: (id: string) => Promise<void>;
+  clearNotifications: () => Promise<void>;
   
-  addTenant: (tenant: Tenant) => void;
-  updateTenant: (id: string, tenant: Partial<Tenant>) => void;
-  deleteTenant: (id: string) => void;
+  addProperty: (property: Omit<Property, 'id'>) => Promise<void>;
+  updateProperty: (id: string, property: Partial<Property>) => Promise<void>;
+  deleteProperty: (id: string) => Promise<void>;
+  
+  addTenant: (tenant: Omit<Tenant, 'id'>) => Promise<void>;
+  updateTenant: (id: string, tenant: Partial<Tenant>) => Promise<void>;
+  deleteTenant: (id: string) => Promise<void>;
 
-  addPayment: (payment: Payment) => void;
+  addPayment: (payment: Omit<Payment, 'id'>) => Promise<void>;
   
-  addMaintenance: (ticket: MaintenanceTicket) => void;
-  updateMaintenance: (id: string, ticket: Partial<MaintenanceTicket>) => void;
-  deleteMaintenance: (id: string) => void;
+  addMaintenance: (ticket: Omit<MaintenanceTicket, 'id' | 'createdAt'>) => Promise<void>;
+  updateMaintenance: (id: string, ticket: Partial<MaintenanceTicket>) => Promise<void>;
+  deleteMaintenance: (id: string) => Promise<void>;
 }
 
-export const useAppStore = create<AppState>()(
-  persist(
-    (set) => ({
-      properties: [
-        {
-          id: '1',
-          name: 'Hodan Villa Complex',
-          type: 'Villa',
-          district: 'Hodan',
-          address: 'KM4 Area, near Digfer Hospital',
-          rentAmount: 1200,
-          currency: 'USD',
-          status: 'Occupied',
-          units: 1,
-          beds: 4,
-          toilets: 3,
-          kitchens: 1,
-          floors: 2,
-        },
-        {
-          id: '2',
-          name: 'Liido View Apartments',
-          type: 'Apartment',
-          district: 'Abdiaziz',
-          address: 'Liido Beach Road',
-          rentAmount: 800,
-          currency: 'USD',
-          status: 'Occupied',
-          units: 1,
-          beds: 2,
-          toilets: 2,
-          kitchens: 1,
-        },
-        {
-          id: '3',
-          name: 'Hamar Weyne Retail Hub',
-          type: 'Shop',
-          district: 'Hamar Weyne',
-          address: 'Maka Al Mukarama Road',
-          rentAmount: 2500,
-          currency: 'USD',
-          status: 'Available',
-          units: 4,
-        },
-        {
-          id: '4',
-          name: 'Waberi Heights',
-          type: 'Apartment',
-          district: 'Waberi',
-          address: 'Near 21 October Square',
-          rentAmount: 600,
-          currency: 'USD',
-          status: 'Maintenance',
-          units: 1,
-          beds: 1,
-          toilets: 1,
-          kitchens: 1,
-        }
-      ],
-      tenants: [
-        {
-          id: 't1',
-          name: 'Mohamed Hussein',
-          phone: '+252 61 123 4567',
-          email: 'mohamed.h@example.com',
-          propertyId: '1',
-          leaseStart: '2025-01-01',
-          leaseEnd: '2026-01-01',
-          status: 'Active',
-        },
-        {
-          id: 't2',
-          name: 'Amina Abdi',
-          phone: '+252 61 765 4321',
-          propertyId: '2',
-          leaseStart: '2025-03-01',
-          leaseEnd: '2026-03-01',
-          status: 'Active',
-        }
-      ],
-      payments: [
-        {
-          id: 'p1',
-          propertyId: '1',
-          tenantId: 't1',
-          amount: 1200,
-          date: '2026-04-01',
-          month: 'April 2026',
-          status: 'Paid',
-        }
-      ],
-      maintenance: [
-        {
-          id: 'm1',
-          propertyId: '4',
-          description: 'Water leak in Unit B level 2',
-          priority: 'High',
-          status: 'Open',
-          createdAt: '2026-04-10',
-        }
-      ],
-      currency: 'USD',
-      notifications: [
-        {
-          id: 'n1',
-          type: 'warning',
-          title: 'Lease Expiry',
-          message: 'Hodan Villa Complex lease for Mohamed Hussein expires in 15 days.',
-          timestamp: new Date().toISOString(),
-          read: false
-        },
-        {
-          id: 'n2',
-          type: 'error',
-          title: 'Late Payment',
-          message: 'Tenant Amina Abdi is 2 days late on April rent.',
-          timestamp: new Date().toISOString(),
-          read: false
-        }
-      addNotification: (n) => set((state) => ({
-        notifications: [
-          {
-            ...n,
-            id: Math.random().toString(36).substr(2, 9),
-            timestamp: new Date().toISOString(),
-            read: false
-          },
-          ...state.notifications
-        ]
-      })),
-      markNotificationRead: (id) => set((state) => ({
-        notifications: state.notifications.map(n => n.id === id ? { ...n, read: true } : n)
-      })),
-      clearNotifications: () => set({ notifications: [] }),
-      
-      addProperty: (property) => set((state) => ({ properties: [...state.properties, property] })),
-      updateProperty: (id, updated) => set((state) => ({
-        properties: state.properties.map((p) => (p.id === id ? { ...p, ...updated } : p))
-      })),
-      deleteProperty: (id) => set((state) => ({
-        properties: state.properties.filter((p) => p.id !== id)
-      })),
-      
-      addTenant: (tenant) => set((state) => ({ tenants: [...state.tenants, tenant] })),
-      updateTenant: (id, updated) => set((state) => ({
-        tenants: state.tenants.map((t) => (t.id === id ? { ...t, ...updated } : t))
-      })),
-      deleteTenant: (id) => set((state) => ({
-        tenants: state.tenants.filter((t) => t.id !== id)
-      })),
+export const useAppStore = create<AppState>((set, get) => ({
+  properties: [],
+  tenants: [],
+  payments: [],
+  maintenance: [],
+  currency: 'USD',
+  notifications: [],
+  loading: false,
+  error: null,
 
-      addPayment: (payment) => set((state) => ({ payments: [...state.payments, payment] })),
-      
-      addMaintenance: (ticket) => set((state) => ({ maintenance: [...state.maintenance, ticket] })),
-      updateMaintenance: (id, updated) => set((state) => ({
-        maintenance: state.maintenance.map((m) => (m.id === id ? { ...m, ...updated } : m))
-      })),
-      deleteMaintenance: (id) => set((state) => ({
-        maintenance: state.maintenance.filter((m) => m.id !== id)
-      })),
-    }),
-    {
-      name: 'm-prms-storage',
+  fetchInitialData: async () => {
+    set({ loading: true, error: null });
+    try {
+      const { data: properties, error: pError } = await supabase.from('properties').select('*').order('created_at', { ascending: false });
+      const { data: tenants, error: tError } = await supabase.from('tenants').select('*').order('created_at', { ascending: false });
+      const { data: payments, error: payError } = await supabase.from('payments').select('*').order('created_at', { ascending: false });
+      const { data: maintenance, error: mError } = await supabase.from('maintenance_tickets').select('*').order('created_at', { ascending: false });
+      const { data: notifications, error: nError } = await supabase.from('notifications').select('*').order('timestamp', { ascending: false });
+
+      if (pError || tError || payError || mError || nError) {
+        throw new Error('Failed to fetch data from Supabase');
+      }
+
+      set({ 
+        properties: (properties as Property[]) || [],
+        tenants: (tenants as Tenant[]) || [],
+        payments: (payments as Payment[]) || [],
+        maintenance: (maintenance as MaintenanceTicket[]) || [],
+        notifications: (notifications as Notification[]) || [],
+        loading: false 
+      });
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
     }
-  )
-);
+  },
+
+  addNotification: async (n) => {
+    const { data, error } = await supabase
+      .from('notifications')
+      .insert([{ ...n, read: false }])
+      .select()
+      .single();
+
+    if (!error && data) {
+      set((state) => ({ notifications: [data, ...state.notifications] }));
+    }
+  },
+
+  markNotificationRead: async (id) => {
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read: true })
+      .eq('id', id);
+
+    if (!error) {
+      set((state) => ({
+        notifications: state.notifications.map(n => n.id === id ? { ...n, read: true } : n)
+      }));
+    }
+  },
+
+  clearNotifications: async () => {
+    const { error } = await supabase.from('notifications').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    if (!error) set({ notifications: [] });
+  },
+  
+  addProperty: async (property) => {
+    const { data, error } = await supabase
+      .from('properties')
+      .insert([property])
+      .select()
+      .single();
+
+    if (!error && data) {
+      set((state) => ({ properties: [data, ...state.properties] }));
+    }
+  },
+
+  updateProperty: async (id, updated) => {
+    const { error } = await supabase
+      .from('properties')
+      .update(updated)
+      .eq('id', id);
+
+    if (!error) {
+      set((state) => ({
+        properties: state.properties.map((p) => (p.id === id ? { ...p, ...updated } : p))
+      }));
+    }
+  },
+
+  deleteProperty: async (id) => {
+    const { error } = await supabase.from('properties').delete().eq('id', id);
+    if (!error) {
+      set((state) => ({
+        properties: state.properties.filter((p) => p.id !== id)
+      }));
+    }
+  },
+  
+  addTenant: async (tenant) => {
+    const { data, error } = await supabase
+      .from('tenants')
+      .insert([tenant])
+      .select()
+      .single();
+
+    if (!error && data) {
+      set((state) => ({ tenants: [data, ...state.tenants] }));
+    }
+  },
+
+  updateTenant: async (id, updated) => {
+    const { error } = await supabase
+      .from('tenants')
+      .update(updated)
+      .eq('id', id);
+
+    if (!error) {
+      set((state) => ({
+        tenants: state.tenants.map((t) => (t.id === id ? { ...t, ...updated } : t))
+      }));
+    }
+  },
+
+  deleteTenant: async (id) => {
+    const { error } = await supabase.from('tenants').delete().eq('id', id);
+    if (!error) {
+      set((state) => ({
+        tenants: state.tenants.filter((t) => t.id !== id)
+      }));
+    }
+  },
+
+  addPayment: async (payment) => {
+    const { data, error } = await supabase
+      .from('payments')
+      .insert([payment])
+      .select()
+      .single();
+
+    if (!error && data) {
+      set((state) => ({ payments: [data, ...state.payments] }));
+    }
+  },
+  
+  addMaintenance: async (ticket) => {
+    const { data, error } = await supabase
+      .from('maintenance_tickets')
+      .insert([ticket])
+      .select()
+      .single();
+
+    if (!error && data) {
+      set((state) => ({ maintenance: [data, ...state.maintenance] }));
+    }
+  },
+
+  updateMaintenance: async (id, updated) => {
+    const { error } = await supabase
+      .from('maintenance_tickets')
+      .update(updated)
+      .eq('id', id);
+
+    if (!error) {
+      set((state) => ({
+        maintenance: state.maintenance.map((m) => (m.id === id ? { ...m, ...updated } : m))
+      }));
+    }
+  },
+
+  deleteMaintenance: async (id) => {
+    const { error } = await supabase.from('maintenance_tickets').delete().eq('id', id);
+    if (!error) {
+      set((state) => ({
+        maintenance: state.maintenance.filter((m) => m.id !== id)
+      }));
+    }
+  },
+}));
