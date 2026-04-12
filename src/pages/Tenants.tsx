@@ -1,0 +1,184 @@
+import React, { useState } from 'react';
+import { 
+  Plus, 
+  Search, 
+  Phone, 
+  Calendar,
+  Mail,
+  MoreHorizontal,
+  FileText,
+  UserCheck,
+  Globe
+} from 'lucide-react';
+import { useAppStore } from '../store';
+import { motion } from 'framer-motion';
+
+const Tenants: React.FC = () => {
+  const { tenants, properties } = useAppStore();
+  const [search, setSearch] = useState('');
+
+  const filteredTenants = tenants.filter(t => 
+    t.name.toLowerCase().includes(search.toLowerCase()) || 
+    t.phone.includes(search)
+  );
+
+  const getPropertyName = (id: string) => {
+    return properties.find(p => p.id === id)?.name || 'Unknown Property';
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}
+    >
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>Resident Registry</h1>
+          <p>Global directory of active residents and commercial tenants across the Mogadishu portfolio.</p>
+        </div>
+        <button className="premium-gradient" style={{ 
+          padding: '0.875rem 1.75rem', 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '0.6rem'
+        }}>
+          <Plus size={20} />
+          Onboard Tenant
+        </button>
+      </header>
+
+      <div className="card glass-panel" style={{ padding: '0', overflow: 'hidden' }}>
+        <div style={{ 
+          padding: '1.5rem 2rem', 
+          borderBottom: '1px solid #f1f5f9',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          background: 'rgba(255,255,255,0.5)'
+        }}>
+          <div className="search-bar" style={{ width: '450px' }}>
+            <Search size={18} color="#94a3b8" />
+            <input 
+              type="text" 
+              placeholder="Search by name, contact, or assigned unit ID..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
+             <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.6rem 1.25rem', color: 'var(--text-main)', fontSize: '0.8125rem', fontWeight: 700, borderRadius: '10px' }}>Export PDF</button>
+             <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.6rem 1.25rem', color: 'var(--text-main)', fontSize: '0.8125rem', fontWeight: 700, borderRadius: '10px' }}>Live Filters</button>
+          </div>
+        </div>
+
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <thead>
+              <tr style={{ background: 'var(--bg-main)' }}>
+                <th style={tableHeaderStyle}>Resident / ID</th>
+                <th style={tableHeaderStyle}>Assigned Unit</th>
+                <th style={tableHeaderStyle}>Registry Period</th>
+                <th style={tableHeaderStyle}>Contact Details</th>
+                <th style={tableHeaderStyle}>Operational Status</th>
+                <th style={tableHeaderStyle}></th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredTenants.map((tenant, index) => (
+                <motion.tr 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  key={tenant.id} 
+                  style={{ borderBottom: '1px solid rgba(0,0,0,0.03)', verticalAlign: 'middle', transition: 'all 0.2s ease' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(7, 89, 133, 0.02)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                >
+                  <td style={tableCellStyle}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <div className="avatar" style={{ width: '40px', height: '40px', fontSize: '0.875rem', fontWeight: 800 }}>
+                        {tenant.name.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: '0.9375rem' }}>{tenant.name}</div>
+                        <div style={{ fontSize: '0.6875rem', color: '#94a3b8', fontWeight: 700 }}>RES-{tenant.id.toUpperCase()}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style={tableCellStyle}>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--primary)' }}>{getPropertyName(tenant.propertyId)}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                       <Globe size={10} /> Mogadishu Portfolio
+                    </div>
+                  </td>
+                  <td style={tableCellStyle}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8125rem', fontWeight: 600 }}>
+                      <Calendar size={14} color="var(--primary-light)" />
+                      {tenant.leaseStart} <span style={{opacity: 0.3}}>→</span> {tenant.leaseEnd}
+                    </div>
+                  </td>
+                  <td style={tableCellStyle}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8125rem', color: 'var(--text-main)', fontWeight: 600 }}>
+                        <Phone size={13} color="var(--primary-light)" /> {tenant.phone}
+                      </div>
+                      {tenant.email && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                          <Mail size={13} /> {tenant.email}
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td style={tableCellStyle}>
+                    <span style={{ 
+                      padding: '0.4rem 0.9rem', 
+                      borderRadius: '20px', 
+                      fontSize: '0.6875rem', 
+                      fontWeight: 800,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      background: tenant.status === 'Active' ? 'var(--accent-soft)' : 'rgba(245, 158, 11, 0.1)',
+                      color: tenant.status === 'Active' ? 'var(--accent)' : 'var(--warning)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.35rem'
+                    }}>
+                      <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'currentColor' }} />
+                      {tenant.status}
+                    </span>
+                  </td>
+                  <td style={tableCellStyle}>
+                    <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                       <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.5rem', borderRadius: '8px', color: '#64748b' }}><FileText size={18} /></button>
+                       <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.5rem', borderRadius: '8px', color: '#64748b' }}><UserCheck size={18} /></button>
+                       <button style={{ background: 'transparent', padding: '0.4rem', color: '#94a3b8' }}><MoreHorizontal size={18} /></button>
+                    </div>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const tableHeaderStyle: React.CSSProperties = {
+  padding: '1.25rem 2rem',
+  fontSize: '0.6875rem',
+  textTransform: 'uppercase',
+  letterSpacing: '0.12em',
+  color: '#475569',
+  fontWeight: 800
+};
+
+const tableCellStyle: React.CSSProperties = {
+  padding: '1.25rem 2rem',
+  color: 'var(--text-main)'
+};
+
+export default Tenants;
+
