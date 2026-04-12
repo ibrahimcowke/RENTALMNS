@@ -32,8 +32,14 @@ interface AppState {
   deleteProperty: (id: string) => void;
   
   addTenant: (tenant: Tenant) => void;
+  updateTenant: (id: string, tenant: Partial<Tenant>) => void;
+  deleteTenant: (id: string) => void;
+
   addPayment: (payment: Payment) => void;
+  
   addMaintenance: (ticket: MaintenanceTicket) => void;
+  updateMaintenance: (id: string, ticket: Partial<MaintenanceTicket>) => void;
+  deleteMaintenance: (id: string) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -185,8 +191,22 @@ export const useAppStore = create<AppState>()(
       })),
       
       addTenant: (tenant) => set((state) => ({ tenants: [...state.tenants, tenant] })),
+      updateTenant: (id, updated) => set((state) => ({
+        tenants: state.tenants.map((t) => (t.id === id ? { ...t, ...updated } : t))
+      })),
+      deleteTenant: (id) => set((state) => ({
+        tenants: state.tenants.filter((t) => t.id !== id)
+      })),
+
       addPayment: (payment) => set((state) => ({ payments: [...state.payments, payment] })),
+      
       addMaintenance: (ticket) => set((state) => ({ maintenance: [...state.maintenance, ticket] })),
+      updateMaintenance: (id, updated) => set((state) => ({
+        maintenance: state.maintenance.map((m) => (m.id === id ? { ...m, ...updated } : m))
+      })),
+      deleteMaintenance: (id) => set((state) => ({
+        maintenance: state.maintenance.filter((m) => m.id !== id)
+      })),
     }),
     {
       name: 'm-prms-storage',

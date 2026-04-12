@@ -101,30 +101,23 @@
     "expand_desc": "11 more districts currently undergoing geospatial analysis and yield auditing for Q3 reports.",
     "request_update": "Request Access Update",
     "list": {
-      "Hodan": {
-        "desc": "The commercial heart of modern Mogadishu. High demand for office spaces and luxury villas.",
-        "tag": "High Growth"
-      },
-      "Abdiaziz": {
-        "desc": "Coastal district famous for Liido Beach. Prime location for tourism and high-end apartments.",
-        "tag": "Premium"
-      },
-      "Waberi": {
-        "desc": "Strategic location near Aden Adde Airport. Busy residential and logistical hub.",
-        "tag": "High Yield"
-      },
-      "Hamar Weyne": {
-        "desc": "The historic old city. Dense commercial activity with traditional shops and heritage sites.",
-        "tag": "Historic"
-      },
-      "Bondhere": {
-        "desc": "Centrally located with many government offices and quiet residential streets.",
-        "tag": "Stable"
-      },
-      "Wadajir": {
-        "desc": "Large residential district with diverse property types and expanding infrastructure.",
-        "tag": "Residential"
-      }
+      "Abdiaziz": { "desc": "Coastal district famous for Liido Beach. Prime location for tourism and high-end apartments.", "tag": "Premium" },
+      "Bondhere": { "desc": "Centrally located with many government offices and quiet residential streets.", "tag": "Stable" },
+      "Daynile": { "desc": "Large expanding district on the outskirts. High potential for industrial and suburb development.", "tag": "Growth Area" },
+      "Dharkenley": { "desc": "Densely populated residential district in the south-west. Stable rental demand.", "tag": "Dense" },
+      "Hamar Jajab": { "desc": "Historic district near the Mogadishu Port. Strategic for logistics and trade.", "tag": "Commercial" },
+      "Hamar Weyne": { "desc": "The historic old city center. Narrow streets with high commercial density.", "tag": "Historic Hub" },
+      "Heliwa": { "desc": "North-eastern district with a mix of residential and agricultural zones.", "tag": "Emerging" },
+      "Hodan": { "desc": "The commercial heart of modern Mogadishu. High demand for office spaces and luxury villas.", "tag": "High Demand" },
+      "Howlwadag": { "desc": "Home to the massive Bakaara Market. The engine of Somalia's informal economy.", "tag": "Market Center" },
+      "Karan": { "desc": "Northern coastal district known for its clean air and expanding residential estates.", "tag": "Residential" },
+      "Shangani": { "desc": "One of the oldest districts, characterized by unique architecture and seaside views.", "tag": "Heritage" },
+      "Shibis": { "desc": "A well-established residential district with central access to main city arteries.", "tag": "Established" },
+      "Waberi": { "desc": "Strategic district housing the Airport and many international organizations.", "tag": "Security Zone" },
+      "Wadajir": { "desc": "Vibrant and diverse district including the famous KM4 intersection.", "tag": "Diverse" },
+      "Wardhigley": { "desc": "Administrative center of the city, located near the Presidential Palace.", "tag": "Admin Center" },
+      "Yaqshid": { "desc": "Largest district by population. Massive scale for residential and retail management.", "tag": "High Scale" },
+      "Kahda": { "desc": "Mogadishu's newest administrative district. A rapidly growing residential frontier.", "tag": "New Frontier" }
     }
   }
 }

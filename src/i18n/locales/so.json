@@ -101,30 +101,23 @@
     "expand_desc": "11 degmo oo kale ayaa hadda lagu sameynayaa falanqayn dhul iyo hantidhowrka waxsoosaarka ee warbixinnada Q3.",
     "request_update": "Codso Cusboonaysiin",
     "list": {
-      "Hodan": {
-        "desc": "Xarunta ganacsiga ee Muqdishada casriga ah. Baahi weyn oo loo qabo xafiisyo iyo guryo raaxo leh.",
-        "tag": "Koraan Sare"
-      },
-      "Abdiaziz": {
-        "desc": "Degmo ku taal xeebta kuna caan ah xeebta Liido. Goob muhiim u ah dalxiiska iyo guryaha dabaqyada ee qaaliga ah.",
-        "tag": "Qaali"
-      },
-      "Waberi": {
-        "desc": "Goob istiraatiiji ah oo u dhow Garoonka Aden Adde. Xarun mashquul badan oo deegaan iyo sahayda ah.",
-        "tag": "Waxsoosaar Sare"
-      },
-      "Hamar Weyne": {
-        "desc": "Magaaladii hore ee taariikhiga ahayd. Hawlo ganacsi oo cufan oo leh dukaamo dhaqameed iyo goobo dhaxalka ah.",
-        "tag": "Taariikhi"
-      },
-      "Bondhere": {
-        "desc": "Waxay ku taal bartamaha iyadoo leh xafiisyo dowladeed oo badan iyo waddooyin deegaan oo deggan.",
-        "tag": "Deggan"
-      },
-      "Wadajir": {
-        "desc": "Degmo weyn o deegaan ah oo leh noocyo kala duwan oo hanti ah iyo kaabayaal sii kordhaya.",
-        "tag": "Deegaan"
-      }
+      "Abdiaziz": { "desc": "Degmo dhul-xeebeed ah oo caan ku ah Xeebta Liido. Goob muhiim u ah dalxiiska iyo dabaqyada raaxada.", "tag": "Qaali" },
+      "Bondhere": { "desc": "Degmo ku taal bartamaha magaalada oo leh xafiisyo dawladeed iyo jidad deegaan oo deggan.", "tag": "Deggan" },
+      "Daynile": { "desc": "Degmo weyn oo ku taal duleedka magaalada. Leh fursado waaweyn oo dhanka warshadaha iyo deegaanka ah.", "tag": "Koraaya" },
+      "Dharkenley": { "desc": "Degmo deegaan oo dadku ku badan yihiin, kuna taal dhanka koonfur-galbeed.", "tag": "Dad weyn" },
+      "Hamar Jajab": { "desc": "Degmo taariikhi ah oo u dhow Dekadda Muqdisho. Muhiim u ah ganacsiga iyo saadka.", "tag": "Ganacsi" },
+      "Hamar Weyne": { "desc": "Bartamaha magaalada ee taariikhiga ah. Jidad ciriiri ah iyo ganacsi aad u baahsan.", "tag": "Xarun Ganacsi" },
+      "Heliwa": { "desc": "Degmo ku taal waqooyi-bari oo leh deegaan iyo dhul-beereed isku dhafan.", "tag": "Mid cusub" },
+      "Hodan": { "desc": "Wadnaha ganacsiga ee Muqdishada casriga ah. Baahi weyn u qabta xafiisyada iyo fillooyinka.", "tag": "Baahi Weyn" },
+      "Howlwadag": { "desc": "Xarunta Suuqa Bakaaraha. Matoorka dhaqaalaha ee Soomaaliya.", "tag": "Bartamaha Suuqa" },
+      "Karan": { "desc": "Degmo dhul-xeebeed ah oo waqooyi ku taal, caanna ku ah hawo nadiif ah iyo deegaano koraaya.", "tag": "Deegaan" },
+      "Shangani": { "desc": "Salah mid ka mid ah degmooyinka ugu faca weyn, lehna dhisme gaar ah iyo muuqaal baddeed.", "tag": "Taariikh" },
+      "Shibis": { "desc": "Degmo deegaan oo fac weyn, bartamahana u dhow, lehna helitaan jidadka waaweyn.", "tag": "Deggan" },
+      "Waberi": { "desc": "Degmo istiraatiiji ah oo ay ku yaallaan Garoonka Diyaaradaha iyo hay'ado caalami ah.", "tag": "Aag Amni" },
+      "Wadajir": { "desc": "Degmo firfircoon oo leh deegaano kala duwan, laguna yaqaan isgoyska KM4.", "tag": "Kala duwan" },
+      "Wardhigley": { "desc": "Xarunta maamulka ee magaalada, waxaana ku yaalla Madaxtooyada Qaranka.", "tag": "Xarun Maamul" },
+      "Yaqshid": { "desc": "Degmada ugu dadka badan. Baaxad weyn oo ku habboon deegaanka iyo ganacsiga tafaariiqda.", "tag": "Baaxad Weyn" },
+      "Kahda": { "desc": "Degmada ugu dambaysay ee lagu daray Muqdisho. Goob deegaan oo si xawli ah u koraaya.", "tag": "Caraf Cusub" }
     }
   }
 }

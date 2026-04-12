@@ -8,16 +8,22 @@ import {
   MoreHorizontal,
   FileText,
   UserCheck,
-  Globe
+  Globe,
+  Edit,
+  Trash2
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import type { Tenant } from '../types';
+import TenantWizard from '../components/TenantWizard';
 
 const Tenants: React.FC = () => {
-  const { tenants, properties } = useAppStore();
-  const { t } = useTranslation();
+  const { tenants, properties, deleteTenant } = useAppStore();
+  const { t, i18n } = useTranslation();
   const [search, setSearch] = useState('');
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [editingTenant, setEditingTenant] = useState<Tenant | undefined>(undefined);
 
   const filteredTenants = tenants.filter(t => 
     t.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -26,6 +32,16 @@ const Tenants: React.FC = () => {
 
   const getPropertyName = (id: string) => {
     return properties.find(p => p.id === id)?.name || 'Unknown Property';
+  };
+
+  const handleEdit = (tenant: Tenant) => {
+    setEditingTenant(tenant);
+    setIsWizardOpen(true);
+  };
+
+  const closeWizard = () => {
+    setIsWizardOpen(false);
+    setEditingTenant(undefined);
   };
 
   return (
@@ -39,12 +55,16 @@ const Tenants: React.FC = () => {
           <h1 className="text-gradient" style={{ fontSize: '2.25rem', marginBottom: '0.25rem' }}>{t('tenants.title')}</h1>
           <p>{t('tenants.subtitle')}</p>
         </div>
-        <button className="premium-gradient" style={{ 
-          padding: '0.875rem 1.75rem', 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '0.6rem'
-        }}>
+        <button 
+          onClick={() => setIsWizardOpen(true)}
+          className="premium-gradient" 
+          style={{ 
+            padding: '0.875rem 1.75rem', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.6rem'
+          }}
+        >
           <Plus size={20} />
           {t('tenants.onboard_button')}
         </button>
@@ -71,7 +91,6 @@ const Tenants: React.FC = () => {
           
           <div style={{ display: 'flex', gap: '0.75rem' }}>
              <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.6rem 1.25rem', color: 'var(--text-main)', fontSize: '0.8125rem', fontWeight: 700, borderRadius: '10px' }}>{t('common.export')} PDF</button>
-             <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.6rem 1.25rem', color: 'var(--text-main)', fontSize: '0.8125rem', fontWeight: 700, borderRadius: '10px' }}>Live Filters</button>
           </div>
         </div>
 
@@ -153,9 +172,22 @@ const Tenants: React.FC = () => {
                   </td>
                   <td style={tableCellStyle}>
                     <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-                       <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.5rem', borderRadius: '8px', color: '#64748b' }}><FileText size={18} /></button>
-                       <button style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.5rem', borderRadius: '8px', color: '#64748b' }}><UserCheck size={18} /></button>
-                       <button style={{ background: 'transparent', padding: '0.4rem', color: '#94a3b8' }}><MoreHorizontal size={18} /></button>
+                       <button 
+                        onClick={() => handleEdit(tenant)}
+                        style={{ background: 'white', border: '1px solid #e2e8f0', padding: '0.5rem', borderRadius: '8px', color: '#64748b' }}
+                       >
+                        <Edit size={18} />
+                       </button>
+                       <button 
+                         onClick={() => {
+                           if(window.confirm('Delete this tenant record?')) {
+                             deleteTenant(tenant.id);
+                           }
+                         }}
+                         style={{ background: 'white', border: '1px solid #fee2e2', padding: '0.5rem', borderRadius: '8px', color: 'var(--danger)' }}
+                       >
+                        <Trash2 size={18} />
+                       </button>
                     </div>
                   </td>
                 </motion.tr>
@@ -164,6 +196,12 @@ const Tenants: React.FC = () => {
           </table>
         </div>
       </div>
+
+      <TenantWizard 
+        isOpen={isWizardOpen} 
+        onClose={closeWizard} 
+        initialData={editingTenant}
+      />
     </motion.div>
   );
 };
