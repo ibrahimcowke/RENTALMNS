@@ -3,12 +3,10 @@ import {
   X, 
   Wrench, 
   AlertOctagon, 
-  CheckCircle2, 
   Clock, 
   Building2,
-  PlayCircle
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
 import type { MaintenanceTicket } from '../types';

@@ -12,7 +12,7 @@ import { useAppStore } from './store';
 import './index.css';
 
 const App: React.FC = () => {
-  const { fetchInitialData, loading, error } = useAppStore();
+  const { fetchInitialData, loading } = useAppStore();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 

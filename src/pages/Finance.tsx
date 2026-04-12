@@ -140,7 +140,7 @@ const Finance: React.FC = () => {
             </thead>
             <tbody>
               <AnimatePresence mode="popLayout">
-                {filteredPayments.map((payment, idx) => (
+                {filteredPayments.map((payment) => (
                   <motion.tr 
                     layout
                     initial={{ opacity: 0, x: -10 }}

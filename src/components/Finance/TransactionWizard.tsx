@@ -9,10 +9,9 @@ import {
   CreditCard,
   Hash
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { useAppStore } from '../store';
-import type { Payment } from '../types';
+import { motion } from 'framer-motion';
+import { useAppStore } from '../../store';
+import type { Payment, Tenant, Property } from '../../types';
 
 interface TransactionWizardProps {
   isOpen: boolean;
@@ -20,7 +19,6 @@ interface TransactionWizardProps {
 }
 
 const TransactionWizard: React.FC<TransactionWizardProps> = ({ isOpen, onClose }) => {
-  const { t } = useTranslation();
   const { properties, tenants, addPayment, addNotification } = useAppStore();
   const [formData, setFormData] = useState<Partial<Payment>>({
     propertyId: '',
@@ -39,14 +37,14 @@ const TransactionWizard: React.FC<TransactionWizardProps> = ({ isOpen, onClose }
   const currentYear = new Date().getFullYear();
 
   // Update tenant list when property changes
-  const filteredTenants = tenants.filter(t => t.propertyId === formData.propertyId);
+  const filteredTenants = tenants.filter((t: Tenant) => t.propertyId === formData.propertyId);
 
   // Auto-fill amount when tenant/property is selected
   useEffect(() => {
     if (formData.propertyId) {
-      const prop = properties.find(p => p.id === formData.propertyId);
+      const prop = properties.find((p: Property) => p.id === formData.propertyId);
       if (prop) {
-        setFormData(prev => ({ ...prev, amount: prop.rentAmount }));
+        setFormData((prev: Partial<Payment>) => ({ ...prev, amount: prop.rentAmount }));
       }
     }
   }, [formData.propertyId, properties]);
@@ -116,7 +114,7 @@ const TransactionWizard: React.FC<TransactionWizardProps> = ({ isOpen, onClose }
                   onChange={e => setFormData({...formData, propertyId: e.target.value, tenantId: ''})}
                 >
                   <option value="">Select unit...</option>
-                  {properties.map(p => (
+                  {properties.map((p: Property) => (
                     <option key={p.id} value={p.id}>{p.name}</option>
                   ))}
                 </select>
@@ -133,7 +131,7 @@ const TransactionWizard: React.FC<TransactionWizardProps> = ({ isOpen, onClose }
                   onChange={e => setFormData({...formData, tenantId: e.target.value})}
                 >
                   <option value="">Select resident...</option>
-                  {filteredTenants.map(t => (
+                  {filteredTenants.map((t: Tenant) => (
                     <option key={t.id} value={t.id}>{t.name}</option>
                   ))}
                 </select>

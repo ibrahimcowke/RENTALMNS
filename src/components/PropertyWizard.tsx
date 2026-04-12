@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
-import type { District, PropertyType, Property } from '../types';
+import type { Property } from '../types';
 
 interface PropertyWizardProps {
   isOpen: boolean;

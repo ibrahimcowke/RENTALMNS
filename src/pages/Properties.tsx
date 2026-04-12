@@ -19,7 +19,7 @@ import { formatCurrency } from '../utils/format';
 import PropertyWizard from '../components/PropertyWizard';
 
 const Properties: React.FC = () => {
-  const { properties, deleteProperty, currency } = useAppStore();
+  const { properties, deleteProperty } = useAppStore();
   const { t } = useTranslation();
   const [filter, setFilter] = useState<string>('All');
   const [search, setSearch] = useState('');
@@ -190,7 +190,7 @@ const Properties: React.FC = () => {
                 </div>
 
                 {/* Architectural Features */}
-                {(property.beds || property.toilets || property.kitchens) && (
+                {((property.beds || 0) > 0 || (property.toilets || 0) > 0 || (property.kitchens || 0) > 0) && (
                   <div style={{ 
                     display: 'flex', 
                     gap: '1rem', 
@@ -200,22 +200,22 @@ const Properties: React.FC = () => {
                     borderRadius: '12px',
                     border: '1px solid #f1f5f9'
                   }}>
-                    {property.beds > 0 && (
+                    {(property.beds || 0) > 0 && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>
                         <Bed size={14} color="var(--primary)" /> {property.beds} {t('properties.beds')}
                       </div>
                     )}
-                    {property.toilets > 0 && (
+                    {(property.toilets || 0) > 0 && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>
                         <Bath size={14} color="var(--primary)" /> {property.toilets} {t('properties.toilets')}
                       </div>
                     )}
-                    {property.kitchens > 0 && (
+                    {(property.kitchens || 0) > 0 && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>
                         <ChefHat size={14} color="var(--primary)" /> {property.kitchens} {t('properties.kitchens')}
                       </div>
                     )}
-                    {property.floors > 0 && (
+                    {(property.floors || 0) > 0 && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>
                         <Layers size={14} color="var(--primary)" /> {property.floors} {t('properties.floors')}
                       </div>

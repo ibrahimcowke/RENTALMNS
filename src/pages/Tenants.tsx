@@ -5,18 +5,14 @@ import {
   Phone, 
   Calendar,
   Mail,
-  MoreHorizontal,
-  FileText,
-  UserCheck,
   Globe,
   Edit,
   Trash2,
   ShieldCheck,
-  AlertTriangle
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { Tenant } from '../types';
 import TenantWizard from '../components/TenantWizard';
 

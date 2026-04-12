@@ -41,9 +41,10 @@ interface AppState {
   addMaintenance: (ticket: Omit<MaintenanceTicket, 'id' | 'createdAt'>) => Promise<void>;
   updateMaintenance: (id: string, ticket: Partial<MaintenanceTicket>) => Promise<void>;
   deleteMaintenance: (id: string) => Promise<void>;
+  deletePayment: (id: string) => Promise<void>;
 }
 
-export const useAppStore = create<AppState>((set, get) => ({
+export const useAppStore = create<AppState>((set) => ({
   properties: [],
   tenants: [],
   payments: [],
@@ -219,6 +220,15 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (!error) {
       set((state) => ({
         maintenance: state.maintenance.filter((m) => m.id !== id)
+      }));
+    }
+  },
+
+  deletePayment: async (id: string) => {
+    const { error } = await supabase.from('payments').delete().eq('id', id);
+    if (!error) {
+      set((state) => ({
+        payments: state.payments.filter((p) => p.id !== id)
       }));
     }
   },
