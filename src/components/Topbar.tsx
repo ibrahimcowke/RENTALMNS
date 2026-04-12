@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Bell, DollarSign, Globe } from 'lucide-react';
+import { Search, Bell, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
 import './Layout.css';
@@ -9,7 +9,7 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ onOpenNotifications }) => {
-  const { currency, setCurrency, notifications } = useAppStore();
+  const { notifications } = useAppStore();
   const { t, i18n } = useTranslation();
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -47,51 +47,6 @@ const Topbar: React.FC<TopbarProps> = ({ onOpenNotifications }) => {
             {i18n.language === 'en' ? 'SOM' : 'ENG'}
           </span>
         </button>
-
-        {/* Currency Switcher */}
-        <div style={{ 
-          display: 'flex', 
-          background: '#e2e8f0', 
-          padding: '2px', 
-          borderRadius: '10px',
-          marginRight: '1.5rem',
-          boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)'
-        }}>
-          <button 
-            onClick={() => setCurrency('USD')}
-            style={{ 
-              padding: '0.4rem 1rem', 
-              fontSize: '0.75rem', 
-              fontWeight: 700,
-              background: currency === 'USD' ? 'white' : 'transparent',
-              boxShadow: currency === 'USD' ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-              color: currency === 'USD' ? 'var(--primary)' : '#64748b'
-            }}
-          >
-            <DollarSign size={13} /> USD
-          </button>
-          <button 
-            onClick={() => setCurrency('SOS')}
-            style={{ 
-              padding: '0.4rem 1rem', 
-              fontSize: '0.75rem', 
-              fontWeight: 700,
-              background: currency === 'SOS' ? 'white' : 'transparent',
-              boxShadow: currency === 'SOS' ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-              color: currency === 'SOS' ? 'var(--primary)' : '#64748b'
-            }}
-          >
-            SOS
-          </button>
-        </div>
 
         <button 
           onClick={onOpenNotifications}

@@ -16,13 +16,10 @@ interface AppState {
   tenants: Tenant[];
   payments: Payment[];
   maintenance: MaintenanceTicket[];
-  currency: 'USD' | 'SOS';
-  exchangeRate: number; // 1 USD to SOS
+  currency: 'USD';
   notifications: Notification[];
   
   // Actions
-  setCurrency: (currency: 'USD' | 'SOS') => void;
-  setExchangeRate: (rate: number) => void;
   addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => void;
   markNotificationRead: (id: string) => void;
   clearNotifications: () => void;
@@ -144,7 +141,6 @@ export const useAppStore = create<AppState>()(
         }
       ],
       currency: 'USD',
-      exchangeRate: 26000,
       notifications: [
         {
           id: 'n1',
@@ -162,10 +158,6 @@ export const useAppStore = create<AppState>()(
           timestamp: new Date().toISOString(),
           read: false
         }
-      ],
-
-      setCurrency: (currency) => set({ currency }),
-      setExchangeRate: (exchangeRate) => set({ exchangeRate }),
       addNotification: (n) => set((state) => ({
         notifications: [
           {

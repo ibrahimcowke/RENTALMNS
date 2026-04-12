@@ -19,7 +19,7 @@ import { formatCurrency } from '../utils/format';
 import PropertyWizard from '../components/PropertyWizard';
 
 const Properties: React.FC = () => {
-  const { properties, deleteProperty, currency, exchangeRate } = useAppStore();
+  const { properties, deleteProperty, currency } = useAppStore();
   const { t } = useTranslation();
   const [filter, setFilter] = useState<string>('All');
   const [search, setSearch] = useState('');
@@ -183,7 +183,7 @@ const Properties: React.FC = () => {
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '-0.02em' }}>
-                      {formatCurrency(property.rentAmount, currency, exchangeRate)}
+                      {formatCurrency(property.rentAmount)}
                     </div>
                     <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>{t('properties.rent_per_month')}</div>
                   </div>

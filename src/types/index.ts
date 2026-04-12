@@ -26,7 +26,7 @@ export interface Property {
   district: District;
   address: string;
   rentAmount: number;
-  currency: 'USD' | 'SOS';
+  currency: 'USD';
   status: 'Available' | 'Occupied' | 'Maintenance';
   units: number;
   image?: string;

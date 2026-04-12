@@ -12,7 +12,7 @@ interface StatementModalProps {
 }
 
 const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => {
-  const { tenants, properties, currency, exchangeRate } = useAppStore();
+  const { tenants, properties } = useAppStore();
   const { t } = useTranslation();
 
   if (!payment) return null;
@@ -122,7 +122,7 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
                        </td>
                        <td style={{ padding: '1.5rem 1rem', borderBottom: '1px solid #f1f5f9', textAlign: 'center' }}>1</td>
                        <td style={{ padding: '1.5rem 1rem', borderBottom: '1px solid #f1f5f9', textAlign: 'right', fontWeight: 600 }}>
-                          {formatCurrency(payment.amount, currency, exchangeRate)}
+                          {formatCurrency(payment.amount)}
                        </td>
                     </tr>
                  </tbody>
@@ -132,7 +132,7 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
                  <div style={{ width: '250px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0' }}>
                        <span>Subtotal</span>
-                       <span>{formatCurrency(payment.amount, currency, exchangeRate)}</span>
+                       <span>{formatCurrency(payment.amount)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', color: 'var(--success)', fontWeight: 600 }}>
                        <span>Tax (0%)</span>
@@ -140,7 +140,7 @@ const StatementModal: React.FC<StatementModalProps> = ({ payment, onClose }) => 
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem 0', borderTop: '2px solid var(--text-main)', marginTop: '0.5rem', fontSize: '1.25rem', fontWeight: 700 }}>
                        <span>{t('finance.gross_amount')}</span>
-                       <span>{formatCurrency(payment.amount, currency, exchangeRate)}</span>
+                       <span>{formatCurrency(payment.amount)}</span>
                     </div>
                  </div>
               </div>

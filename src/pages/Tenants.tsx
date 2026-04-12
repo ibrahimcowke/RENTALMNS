@@ -10,7 +10,9 @@ import {
   UserCheck,
   Globe,
   Edit,
-  Trash2
+  Trash2,
+  ShieldCheck,
+  AlertTriangle
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
@@ -19,7 +21,7 @@ import type { Tenant } from '../types';
 import TenantWizard from '../components/TenantWizard';
 
 const Tenants: React.FC = () => {
-  const { tenants, properties, deleteTenant } = useAppStore();
+  const { tenants, properties, payments, deleteTenant } = useAppStore();
   const { t, i18n } = useTranslation();
   const [search, setSearch] = useState('');
   const [isWizardOpen, setIsWizardOpen] = useState(false);
@@ -42,6 +44,29 @@ const Tenants: React.FC = () => {
   const closeWizard = () => {
     setIsWizardOpen(false);
     setEditingTenant(undefined);
+  };
+
+  const calculateLeaseHealth = (endDate: string) => {
+    const end = new Date(endDate);
+    const now = new Date();
+    const diffTime = end.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) return { status: 'Expired', color: 'var(--danger)', bg: 'rgba(239, 68, 68, 0.1)' };
+    if (diffDays <= 30) return { status: 'Expiring Soon', color: 'var(--warning)', bg: 'rgba(245, 158, 11, 0.1)' };
+    return { status: 'Healthy', color: 'var(--success)', bg: 'rgba(16, 185, 129, 0.1)' };
+  };
+
+  const calculateReliability = (tenantId: string) => {
+    const tenantPayments = payments.filter(p => p.tenantId === tenantId);
+    if (tenantPayments.length === 0) return { score: 'New', color: 'var(--info)' };
+    
+    const paid = tenantPayments.filter(p => p.status === 'Paid').length;
+    const ratio = paid / tenantPayments.length;
+    
+    if (ratio >= 0.9) return { score: 'Excellent', color: 'var(--success)' };
+    if (ratio >= 0.7) return { score: 'Good', color: 'var(--primary)' };
+    return { score: 'Review', color: 'var(--warning)' };
   };
 
   return (
@@ -100,8 +125,9 @@ const Tenants: React.FC = () => {
               <tr style={{ background: 'var(--bg-main)' }}>
                 <th style={tableHeaderStyle}>{t('tenants.title')} / ID</th>
                 <th style={tableHeaderStyle}>Assigned Unit</th>
-                <th style={tableHeaderStyle}>{t('tenants.lease_period')}</th>
+                <th style={tableHeaderStyle}>{t('tenants.lease_period')} / Health</th>
                 <th style={tableHeaderStyle}>{t('tenants.contact_details')}</th>
+                <th style={tableHeaderStyle}>Reliability</th>
                 <th style={tableHeaderStyle}>{t('tenants.operational_status')}</th>
                 <th style={tableHeaderStyle}></th>
               </tr>
@@ -114,8 +140,6 @@ const Tenants: React.FC = () => {
                   transition={{ delay: index * 0.05 }}
                   key={tenant.id} 
                   style={{ borderBottom: '1px solid rgba(0,0,0,0.03)', verticalAlign: 'middle', transition: 'all 0.2s ease' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(7, 89, 133, 0.02)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                 >
                   <td style={tableCellStyle}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -135,10 +159,27 @@ const Tenants: React.FC = () => {
                     </div>
                   </td>
                   <td style={tableCellStyle}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8125rem', fontWeight: 600 }}>
-                      <Calendar size={14} color="var(--primary-light)" />
-                      {tenant.leaseStart} <span style={{opacity: 0.3}}>→</span> {tenant.leaseEnd}
-                    </div>
+                    {(() => {
+                      const health = calculateLeaseHealth(tenant.leaseEnd);
+                      return (
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+                            <Calendar size={14} color="var(--primary-light)" />
+                            {tenant.leaseStart} <span style={{opacity: 0.3}}>→</span> {tenant.leaseEnd}
+                          </div>
+                          <span style={{ 
+                            fontSize: '0.6875rem', 
+                            padding: '0.2rem 0.6rem', 
+                            borderRadius: '12px', 
+                            background: health.bg, 
+                            color: health.color, 
+                            fontWeight: 700 
+                          }}>
+                            {health.status}
+                          </span>
+                        </div>
+                      )
+                    })()}
                   </td>
                   <td style={tableCellStyle}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
@@ -151,6 +192,17 @@ const Tenants: React.FC = () => {
                         </div>
                       )}
                     </div>
+                  </td>
+                  <td style={tableCellStyle}>
+                    {(() => {
+                      const rel = calculateReliability(tenant.id);
+                      return (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, color: rel.color }}>
+                          <ShieldCheck size={16} />
+                          {rel.score}
+                        </div>
+                      );
+                    })()}
                   </td>
                   <td style={tableCellStyle}>
                     <span style={{ 

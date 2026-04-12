@@ -17,7 +17,7 @@ import { useAppStore } from '../store';
 import { formatCurrency } from '../utils/format';
 
 const Dashboard: React.FC = () => {
-  const { properties, tenants, payments, maintenance, currency, exchangeRate } = useAppStore();
+  const { properties, tenants, payments, maintenance } = useAppStore();
   const { t } = useTranslation();
 
   const totalRevenue = payments.reduce((acc, curr) => acc + curr.amount, 0);
@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
         <StatCard 
           index={2}
           label={t('dashboard.total_revenue')} 
-          value={formatCurrency(totalRevenue, currency, exchangeRate)} 
+          value={formatCurrency(totalRevenue)} 
           icon={Wallet} 
           trend={{ value: 8, isPositive: true }}
           color="#eab308"
