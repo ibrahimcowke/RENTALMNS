@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { 
-  Wrench, 
   Clock, 
   Plus,
   Filter,
-  MoreVertical,
   AlertOctagon,
   CheckCircle2,
   PlayCircle,
@@ -12,7 +10,8 @@ import {
   Trash2,
   ArrowRight,
   TrendingDown,
-  Activity
+  Activity,
+  Building2
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
