@@ -102,7 +102,7 @@ const Dashboard: React.FC = () => {
       }}>
         {/* Row 1: Charts */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: '2rem' }}>
-          <div className="card">
+          <div className="card" style={{ minWidth: 0 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
               <div>
                 <h3 style={{ margin: 0 }}>{t('dashboard.revenue_trend')}</h3>
@@ -113,7 +113,7 @@ const Dashboard: React.FC = () => {
             <RevenueTrend />
           </div>
 
-          <div className="card">
+          <div className="card" style={{ minWidth: 0 }}>
              <div style={{ marginBottom: '2rem' }}>
                 <h3 style={{ margin: 0 }}>Portfolio Density</h3>
                 <p style={{ margin: 0, fontSize: '0.75rem' }}>Unit distribution by district</p>
