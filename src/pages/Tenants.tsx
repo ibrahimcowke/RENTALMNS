@@ -24,8 +24,8 @@ const Tenants: React.FC = () => {
   const [editingTenant, setEditingTenant] = useState<Tenant | undefined>(undefined);
 
   const filteredTenants = tenants.filter(t => 
-    t.name.toLowerCase().includes(search.toLowerCase()) || 
-    t.phone.includes(search)
+    (t.name?.toLowerCase() || '').includes(search.toLowerCase()) || 
+    (t.phone || '').includes(search)
   );
 
   const getPropertyName = (id: string) => {

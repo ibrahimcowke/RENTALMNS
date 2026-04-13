@@ -33,7 +33,7 @@ const COLORS = ['#0d9488', '#0369a1', '#b45309', '#0ea5e9', '#10b981'];
 
 export const DistrictDistribution: React.FC = () => (
   <div style={{ height: 300, width: '100%' }}>
-    <ResponsiveContainer>
+    <ResponsiveContainer minWidth={0}>
       <PieChart>
         <Pie
           data={districtData}
@@ -62,7 +62,7 @@ export const DistrictDistribution: React.FC = () => (
 
 export const RevenueTrend: React.FC = () => (
   <div style={{ height: 300, width: '100%' }}>
-    <ResponsiveContainer>
+    <ResponsiveContainer minWidth={0}>
       <AreaChart data={revenueData}>
         <defs>
           <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">

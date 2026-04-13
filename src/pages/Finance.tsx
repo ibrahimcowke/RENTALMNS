@@ -31,8 +31,8 @@ const Finance: React.FC = () => {
   const getPropertyName = (id: string) => properties.find(p => p.id === id)?.name || 'Property';
 
   const filteredPayments = payments.filter(p => 
-    getPropertyName(p.propertyId).toLowerCase().includes(search.toLowerCase()) ||
-    p.month.toLowerCase().includes(search.toLowerCase())
+    (getPropertyName(p.propertyId)?.toLowerCase() || '').includes(search.toLowerCase()) ||
+    (p.month?.toLowerCase() || '').includes(search.toLowerCase())
   );
 
   return (

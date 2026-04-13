@@ -30,8 +30,8 @@ const Properties: React.FC = () => {
 
   const filteredProperties = properties.filter(p => {
     const matchesFilter = filter === 'All' || p.district === filter;
-    const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || 
-                          p.address.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = (p.name?.toLowerCase() || '').includes(search.toLowerCase()) || 
+                          (p.address?.toLowerCase() || '').includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 

@@ -97,7 +97,7 @@ const Dashboard: React.FC = () => {
       {/* Main Content Grid */}
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: 'reppat(auto-fit, minmax(400px, 1fr))', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
         gridTemplateAreas: '"charts charts" "map intelligence"',
         gap: '2rem' 
       }}>
