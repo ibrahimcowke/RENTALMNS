@@ -23,9 +23,9 @@ const Finance: React.FC = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   // Dynamic Calculations
-  const totalCollected = payments.filter(p => p.status === 'Paid').reduce((acc, curr) => acc + curr.amount, 0);
-  const pendingAudit = payments.filter(p => p.status === 'Pending').reduce((acc, curr) => acc + curr.amount, 0);
-  const targetRevenue = properties.reduce((acc, curr) => acc + curr.rentAmount, 0);
+  const totalCollected = payments.filter(p => p.status === 'Paid').reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
+  const pendingAudit = payments.filter(p => p.status === 'Pending').reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
+  const targetRevenue = properties.reduce((acc, curr) => acc + (Number(curr.rentAmount) || 0), 0);
   const collectionRate = targetRevenue > 0 ? (totalCollected / targetRevenue) * 100 : 0;
 
   const getPropertyName = (id: string) => properties.find(p => p.id === id)?.name || 'Property';

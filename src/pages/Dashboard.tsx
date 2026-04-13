@@ -20,7 +20,7 @@ const Dashboard: React.FC = () => {
   const { properties, tenants, payments, maintenance } = useAppStore();
   const { t } = useTranslation();
 
-  const totalRevenue = payments.reduce((acc, curr) => acc + curr.amount, 0);
+  const totalRevenue = payments.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
   const occupancyRate = properties.length > 0 
     ? Math.round((properties.filter(p => p.status === 'Occupied').length / properties.length) * 100)
     : 0;
