@@ -140,7 +140,7 @@ const Tenants: React.FC = () => {
                   <td style={tableCellStyle}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <div className="avatar" style={{ width: '40px', height: '40px', fontSize: '0.875rem', fontWeight: 800 }}>
-                        {tenant.name.split(' ').map(n => n[0]).join('')}
+                        {(tenant.name || 'U').split(' ').map(n => n[0]).join('')}
                       </div>
                       <div>
                         <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: '0.9375rem' }}>{tenant.name}</div>

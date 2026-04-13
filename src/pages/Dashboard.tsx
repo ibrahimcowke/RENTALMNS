@@ -97,12 +97,11 @@ const Dashboard: React.FC = () => {
       {/* Main Content Grid */}
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
-        gridTemplateAreas: '"charts charts" "map intelligence"',
+        gridTemplateColumns: '1fr', 
         gap: '2rem' 
       }}>
         {/* Row 1: Charts */}
-        <div style={{ gridArea: 'charts', display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: '2rem' }}>
           <div className="card">
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
               <div>
@@ -124,7 +123,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Row 2: Map & Intelligence */}
-        <div style={{ gridColumn: 'span 2', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
            <MogadishuMap />
            <MarketOverview />
         </div>

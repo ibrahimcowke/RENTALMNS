@@ -203,7 +203,7 @@ const PropertyWizard: React.FC<PropertyWizardProps> = ({ isOpen, onClose, initia
                 style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
               >
                 <div>
-                  <label style={labelStyle}>{t('common.properties')} {t('districts.list.Hodan.desc').split(' ')[0]} Name</label>
+                  <label style={labelStyle}>{t('common.properties')} {(t('districts.list.Hodan.desc') || 'Property').split(' ')[0]} Name</label>
                   <input 
                     style={inputStyle} 
                     placeholder="e.g. Blue Lagoon Villas"
